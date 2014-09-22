@@ -1,4 +1,4 @@
-package com.ericsmith;
+package com.carebears;
 
 public class Server {
 
