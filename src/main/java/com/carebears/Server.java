@@ -33,8 +33,11 @@ public class Server {
         try {
             writer = new PrintWriter(socket.getOutputStream());
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer.println("HTTP/1.0 404");
+            writer.flush();
+            socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            // handle exception here
         }
     }
 
