@@ -11,6 +11,16 @@ public class Server {
     private CareBearSocket serverSocket;
     private Socket socket;
 
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    private int port;
+
     public static void main(String[] args) throws IOException {
         Server server = new Server(new InternetSocket());
         server.start();
