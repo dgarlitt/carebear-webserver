@@ -1,4 +1,5 @@
 import com.carebears.CareBearHttpHandler;
+import com.carebears.servlets.CareBearServlet;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,5 +35,18 @@ public class httpHandlerTest {
         handler.setDocumentRoot("/foo");
         assertEquals("/foo", handler.getDocumentRoot());
     }
+
+    @Test
+    public void ItAddsAServlet() throws Exception {
+        FakeServlet fakeServlet = new FakeServlet();
+        fakeServlet.setPath("/fake");
+
+        handler.registerServlet(fakeServlet);
+
+        CareBearServlet servlet = handler.getServletByPath("/fake");
+
+        assertEquals(fakeServlet, servlet);
+    }
+
 
 }

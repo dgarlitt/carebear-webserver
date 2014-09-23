@@ -5,11 +5,7 @@ import com.carebears.Response;
 
 public abstract class CareBearServlet {
 
-    private String path;
-
-    public String getPath() {
-        return path;
-    }
+    public abstract String getPath();
 
     public void doPost(Request req, Response res) {
         res.send("HTTP/1.0 404");

@@ -3,6 +3,7 @@ package com.carebears;
 import com.carebears.servlets.CareBearServlet;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class CareBearHttpHandler {
     private String documentRoot;
@@ -23,6 +24,20 @@ public class CareBearHttpHandler {
         }
         else if (request.equals("POST / HTTP/1.0")) {
             return("HTTP/1.0 404");
+        }
+
+        return null;
+    }
+
+    public void registerServlet(CareBearServlet servlet) {
+        servlets.add(servlet);
+    }
+
+    public CareBearServlet getServletByPath(String path) {
+        for(CareBearServlet serve: servlets) {
+            if(serve.getPath().equals(path)) {
+                return serve;
+            }
         }
 
         return null;
