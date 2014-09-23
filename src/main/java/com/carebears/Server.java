@@ -43,7 +43,22 @@ public class Server {
         try {
             writer = new PrintWriter(socket.getOutputStream());
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer.println("HTTP/1.0 404");
+
+            String request = reader.readLine();
+            String[] rParams = request.split(" ");
+            String method = rParams[0];
+            String path = rParams[1];
+            String version = rParams[2];
+
+            System.out.println(path);
+
+            if (method.equals("GET") && path.equals("/")) {
+                writer.println("HTTP/1.0 200 OK");
+            } else if (method.equals("POST") && path.equals("/form")) {
+                writer.println("HTTP/1.0 200 OK");
+            } else {
+                writer.println("HTTP/1.0 404");
+            }
             writer.flush();
             socket.close();
         } catch (IOException e) {
