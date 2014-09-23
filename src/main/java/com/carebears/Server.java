@@ -4,26 +4,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
 
-    private ServerSocket serverSocket;
+    private CareBearSocket serverSocket;
     private Socket socket;
 
     public static void main(String[] args) throws IOException {
-        Server server = new Server(new ServerSocket(5000));
+        Server server = new Server(new InternetSocket());
         server.start();
     }
 
-    public Server(ServerSocket sock) {
+    public Server(CareBearSocket sock) {
         this.serverSocket = sock;
     }
 
     public void start() throws IOException {
-        socket = serverSocket.accept();
-        processConnection();
+        serverSocket.start();
+        //socket = serverSocket.accept();
+        //processConnection();
     }
 
     public void processConnection() {

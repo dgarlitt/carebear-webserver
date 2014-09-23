@@ -1,23 +1,16 @@
 package com.carebears;
 
+import com.carebears.CareBearSocket;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class FakeServerSocket extends ServerSocket {
-    private int port;
-
-    public FakeServerSocket(int port) throws IOException {
-        this.port = port;
-    }
+public class FakeServerSocket implements CareBearSocket {
+    public boolean started;
 
     @Override
-    public Socket accept() {
-        return new Socket();
-    }
-
-    @Override
-    public int getLocalPort() {
-        return port;
+    public void start() {
+        started = true;
     }
 }
