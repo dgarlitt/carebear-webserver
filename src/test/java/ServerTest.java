@@ -1,11 +1,9 @@
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import com.carebears.*;
+import com.carebears.Server;
 
-class ServerTest {
-
-
+public class ServerTest {
     @Test
     public void itWillReturnThePortNumber() throws Exception {
         FakeServerSocket socket = new FakeServerSocket();
