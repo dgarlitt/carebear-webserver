@@ -1,8 +1,8 @@
 package com.carebears;
 
-import java.util.PrimitiveIterator;
-
 public class CareBearHttpHandler {
+    private String documentRoot;
+
     public String handle(String request) {
 
         if (request.equals("GET /")) {
@@ -18,5 +18,12 @@ public class CareBearHttpHandler {
         return null;
     }
 
+    public void setDocumentRoot(String documentRoot) {
+        this.documentRoot = documentRoot;
+    }
+
+    public String getDocumentRoot() {
+        return documentRoot;
+    }
 
 }

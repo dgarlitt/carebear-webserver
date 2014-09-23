@@ -29,4 +29,10 @@ public class httpHandlerTest {
         assertEquals("HTTP/1.0 404", stringResponse);
     }
 
+    @Test
+    public void DocumentRootTest() throws Exception {
+        handler.setDocumentRoot("/foo");
+        assertEquals("/foo", handler.getDocumentRoot());
+    }
+
 }
