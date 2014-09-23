@@ -1,4 +1,7 @@
-package com.carebears;
+package com.carebears.servlets;
+
+import com.carebears.Request;
+import com.carebears.Response;
 
 public abstract class CareBearServlet {
 

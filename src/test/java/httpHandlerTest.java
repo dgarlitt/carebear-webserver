@@ -13,19 +13,19 @@ public class httpHandlerTest {
     }
     @Test
     public void ItHandlesRequest() throws Exception {
-        String stringResponse = handler.handle("GET /");
+        String stringResponse = handler.handle("GET / HTTP/1.0");
         assertEquals("HTTP/1.0 200", stringResponse);
     }
 
     @Test
     public void ItHandles404Request() throws Exception {
-        String stringResponse = handler.handle("GET /foobar");
+        String stringResponse = handler.handle("GET /foobar HTTP/1.0");
         assertEquals("HTTP/1.0 404", stringResponse);
     }
 
     @Test
     public void ItHandlesUnreconizedRequest() throws Exception {
-        String stringResponse = handler.handle("POST /");
+        String stringResponse = handler.handle("POST / HTTP/1.0");
         assertEquals("HTTP/1.0 404", stringResponse);
     }
 
