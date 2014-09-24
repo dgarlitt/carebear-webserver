@@ -29,23 +29,10 @@ public class InternetHttpHandler extends CareBearHttpHandler {
                     break;
             }
         }
-//        String[] rParams = request.split(" ");
-//        String method = rParams[0];
-//        String path = rParams[1];
-//        String version = rParams[2];
-
-
-//        if (request.equals("GET / HTTP/1.0")) {
-//            return("HTTP/1.0 200");
-//        }
-//        else if (request.equals("GET /foobar HTTP/1.0")) {
-//            return("HTTP/1.0 404");
-//        }
-//        else if (request.equals("POST / HTTP/1.0")) {
-//            return("HTTP/1.0 404");
-//        }
-
-//        return null;
+        else {
+            writer.println("HTTP/1.0 404");
+            writer.flush();
+        }
     }
 
     public void registerServlet(CareBearServlet servlet) {
