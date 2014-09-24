@@ -9,7 +9,7 @@ public class Response {
         this.writer = writer;
     }
 
-    public void send(String response) {
-
+    public PrintWriter getWriter() {
+        return writer;
     }
 }
