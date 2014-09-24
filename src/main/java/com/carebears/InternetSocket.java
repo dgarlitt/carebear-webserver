@@ -6,9 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 
-/**
- * Created by bruce on 9/23/14.
- */
 public class InternetSocket implements CareBearSocket {
      private java.net.Socket socket;
 
@@ -16,7 +13,7 @@ public class InternetSocket implements CareBearSocket {
     }
 
     @Override
-    public void start() {
+    public void start(CareBearHttpHandler handler) {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(5000);
@@ -24,8 +21,12 @@ public class InternetSocket implements CareBearSocket {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String input = in.readLine();
-            out.println(input);
-            out.flush();
+
+            handler.handle(input, out);
+
+//            out.println(input);
+//            out.flush();
+            socket.close();
         }
         catch (Exception e)
         {

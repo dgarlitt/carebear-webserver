@@ -3,5 +3,5 @@ package com.carebears;
 
 public interface CareBearSocket {
 
-    public void start();
+    public void start(CareBearHttpHandler handler);
 }

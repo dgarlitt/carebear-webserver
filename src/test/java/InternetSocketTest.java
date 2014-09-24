@@ -1,15 +1,26 @@
+import com.carebears.CareBearHttpHandler;
 import com.carebears.CareBearSocket;
+import com.carebears.FakeHttpHandler;
 import com.carebears.InternetSocket;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.InetAddress;
 
 import static org.junit.Assert.assertEquals;
 
 public class InternetSocketTest {
+    CareBearHttpHandler handler;
+
+    @Before
+    public void setup() {
+        handler = new FakeHttpHandler();
+    }
+
     @Test
     public void StartsTheSocket() throws Exception
     {
@@ -18,7 +29,7 @@ public class InternetSocketTest {
 
         new Thread() {
             public void run() {
-                socket.start();
+                socket.start(handler);
             }
         }.start();
 
@@ -28,7 +39,7 @@ public class InternetSocketTest {
             PrintWriter out = new PrintWriter(client.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-            out.println("Test\n");
+            out.println("Test");
             out.flush();
 
             assertEquals("Test", in.readLine());

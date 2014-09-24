@@ -13,5 +13,4 @@ public class RequestTest {
         assertEquals("HTTP/1.0", request.getVersion());
     }
 
-
 }
