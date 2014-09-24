@@ -1,6 +1,7 @@
 package com.carebears;
 
 import com.carebears.servlets.FormServlet;
+import com.carebears.servlets.RootServlet;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -31,6 +32,7 @@ public class Server {
         this.handler = new InternetHttpHandler();
 
         handler.registerServlet(new FormServlet());
+        handler.registerServlet(new RootServlet());
     }
 
     public void start() throws IOException {
