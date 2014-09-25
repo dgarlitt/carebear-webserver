@@ -60,6 +60,9 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
                 stopSocket();
                 break;
             }
+            catch(NullPointerException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

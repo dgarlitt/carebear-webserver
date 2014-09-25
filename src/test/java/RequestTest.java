@@ -18,6 +18,7 @@ public class RequestTest {
         assertEquals("GET", request.getMethod());
         assertEquals("/fake", request.getPath());
         assertEquals("HTTP/1.0", request.getVersion());
+        assertEquals("var=123", request.getUrlParameters());
     }
 
 }
