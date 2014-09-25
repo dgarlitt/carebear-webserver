@@ -13,7 +13,7 @@ public class RootServlet extends CareBearServlet {
 
     @Override
     public void doGet(Request req, Response res) {
-        res.setStatusCode("200 OK");
+        res.setStatusCode(200);
         res.send();
     }
 

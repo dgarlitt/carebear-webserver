@@ -26,9 +26,9 @@ public class ResponseTest {
 
     @Test
     public void ItAcceptsAStatusCode() throws Exception {
-        response.setStatusCode("200 OK");
+        response.setStatusCode(200);
 
-        assertEquals("200 OK", response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ResponseTest {
     @Test
     public void ItAcceptsANumberForTheStatusCode() throws Exception {
         response.setStatusCode(302);
-        assertEquals("302", response.getStatusCode());
+        assertEquals(302, response.getStatusCode());
     }
 
     @Test
@@ -74,8 +74,8 @@ public class ResponseTest {
 
     @Test
     public void ItWritesTheExpectedResponse() throws Exception {
-        response.setStatusCode("200 OK");
-        String expected =   "HTTP/1.0 " + response.getStatusCode() + "\n" +
+        response.setStatusCode(200);
+        String expected =   "HTTP/1.0 " + response.getStatusCode() + " OK\n" +
                             "Server: " + response.getHeader("Server") + "\n" +
                             "Accept-Language: " + response.getHeader("Accept-Language") + "\n" +
                             "Content-Type: " + response.getHeader("Content-Type") + "\n";

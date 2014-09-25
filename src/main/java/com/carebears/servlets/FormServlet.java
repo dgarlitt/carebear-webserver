@@ -17,14 +17,20 @@ public class FormServlet extends CareBearServlet {
     }
 
     @Override
+    public void doGet(Request req, Response res) {
+        res.setStatusCode(200);
+        res.setBody("data=cosby");
+    }
+
+    @Override
     public void doPost(Request req, Response res) {
-        res.setStatusCode("200 OK");
+        res.setStatusCode(200);
         res.send();
     }
 
     @Override
     public void doPut(Request req, Response res) {
-        res.setStatusCode("200 OK");
+        res.setStatusCode(200);
         res.send();
     }
 

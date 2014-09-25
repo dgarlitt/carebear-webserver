@@ -41,8 +41,8 @@ public class InternetHttpHandler extends CareBearHttpHandler {
                 writer.flush();
             }
             catch(FileNotFoundException ex) {
-                writer.println("HTTP/1.0 404");
-                writer.flush();
+                resObj.setStatusCode(404);
+                resObj.send();
             }
         }
     }

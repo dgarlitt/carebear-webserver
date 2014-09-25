@@ -9,14 +9,14 @@ import java.util.Set;
 public class Response {
 
     private PrintWriter writer;
-    private String statusCode;
+    private int statusCode;
     private HashMap<String, String> headers = new HashMap<String, String>();
     private String body = "";
 
     public Response(PrintWriter writer) {
         this.writer = writer;
 
-        statusCode = "404";
+        statusCode = 404;
 
         headers.put("Content-Type", "text/html; charset=utf-8");
         headers.put("Server", "CareBearServer/0.0.1");
@@ -27,16 +27,12 @@ public class Response {
         return writer;
     }
 
-    public String getStatusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
-
     public void setStatusCode(int statusCode) {
-        this.statusCode = "" + statusCode;
+        this.statusCode = statusCode;
     }
 
     public String getHeader(String header) {
@@ -63,9 +59,13 @@ public class Response {
         Set headerSet = headers.entrySet();
         Iterator h = headerSet.iterator();
 
-        writer.println("HTTP/1.0 " + getStatusCode());
+        writer.print("HTTP/1.0 " + getStatusCode());
+        if (statusCode == 200) {
+            writer.print(" OK");
+        }
+        writer.print("\n");
 
-        if (!getStatusCode().equals("404")) {
+        if (statusCode < 400) {
             while (h.hasNext()) {
                 Map.Entry entry = (Map.Entry) h.next();
                 writer.println(entry.getKey() + ": " + entry.getValue());

@@ -10,27 +10,23 @@ public abstract class CareBearServlet {
     public abstract String getPath();
 
     public void doPost(Request req, Response res) {
-        PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 404");
-        writer.flush();
+        res.setStatusCode(405);
+        res.send();
     }
 
     public void doGet(Request req, Response res) {
-        PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 404");
-        writer.flush();
+        res.setStatusCode(405);
+        res.send();
     }
 
     public void doPut(Request req, Response res) {
-        PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 404");
-        writer.flush();
+        res.setStatusCode(405);
+        res.send();
     }
 
     public void doDelete(Request req, Response res) {
-        PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 404");
-        writer.flush();
+        res.setStatusCode(405);
+        res.send();
     }
 
 //    public void listDirectory(Request req, Response res) {

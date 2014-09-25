@@ -39,14 +39,14 @@ public class ServletTest {
     public void ItHandles404Request() throws Exception {
         Request request = new Request("GET /foobar HTTP/1.0");
         fakeServlet.doDelete(request, response);
-        assertEquals("HTTP/1.0 404\n", getString());
+        assertEquals("HTTP/1.0 405\n", getString());
     }
 
     @Test
     public void ItHandlesUnreconizedRequest() throws Exception {
         Request request = new Request("POST / HTTP/1.0");
         fakeServlet.doPost(request, response);
-        assertEquals("HTTP/1.0 404\n", getString());
+        assertEquals("HTTP/1.0 405\n", getString());
     }
 
     @Test

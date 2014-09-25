@@ -1,8 +1,6 @@
 package com.carebears;
 
-import com.carebears.servlets.FormServlet;
-import com.carebears.servlets.RedirectServlet;
-import com.carebears.servlets.RootServlet;
+import com.carebears.servlets.*;
 
 import java.io.IOException;
 
