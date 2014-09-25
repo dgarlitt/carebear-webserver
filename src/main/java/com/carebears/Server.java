@@ -1,6 +1,7 @@
 package com.carebears;
 
 import com.carebears.servlets.FormServlet;
+import com.carebears.servlets.ParameterServlet;
 import com.carebears.servlets.RedirectServlet;
 import com.carebears.servlets.RootServlet;
 
@@ -18,6 +19,8 @@ public class Server {
         handler.registerServlet(new FormServlet());
         handler.registerServlet(new RootServlet());
         handler.registerServlet(new RedirectServlet());
+        //handler.registerServlet(new ParameterServlet());
+
     }
 
     public int getPort() {
