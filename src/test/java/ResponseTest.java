@@ -52,6 +52,12 @@ public class ResponseTest {
     }
 
     @Test
+    public void ItAcceptsANumberForTheStatusCode() throws Exception {
+        response.setStatusCode(302);
+        assertEquals("302", response.getStatusCode());
+    }
+
+    @Test
     public void ItWritesTheDefaultResponse() throws Exception {
         String expected = "HTTP/1.0 404\n";
         response.send();
@@ -60,13 +66,19 @@ public class ResponseTest {
     }
 
     @Test
+    public void ItWritesALocationHeader() throws Exception {
+        String loc = "http://localhost/somewhere";
+        response.setHeader("Location", loc);
+        assertEquals(loc, response.getHeader("Location"));
+    }
+
+    @Test
     public void ItWritesTheExpectedResponse() throws Exception {
         response.setStatusCode("200 OK");
         String expected =   "HTTP/1.0 " + response.getStatusCode() + "\n" +
                             "Server: " + response.getHeader("Server") + "\n" +
                             "Accept-Language: " + response.getHeader("Accept-Language") + "\n" +
-                            "Content-Type: " + response.getHeader("Content-Type") + "\n" +
-                            "\n" + response.getBody();
+                            "Content-Type: " + response.getHeader("Content-Type") + "\n";
         response.send();
 
         assertEquals(expected, swriter.getBuffer().toString());

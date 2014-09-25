@@ -35,12 +35,20 @@ public class Response {
         this.statusCode = statusCode;
     }
 
+    public void setStatusCode(int statusCode) {
+        this.statusCode = "" + statusCode;
+    }
+
     public String getHeader(String header) {
         return headers.get(header);
     }
 
     public void setHeader(String header, String mimeType) {
-        headers.replace(header, mimeType);
+        if (headers.containsKey(header)) {
+            headers.replace(header, mimeType);
+        } else {
+            headers.put(header, mimeType);
+        }
     }
 
     public String getBody() {
@@ -63,8 +71,10 @@ public class Response {
                 writer.println(entry.getKey() + ": " + entry.getValue());
             }
 
-            writer.println("");
-            writer.print(getBody());
+            if (!getBody().isEmpty()) {
+                writer.println("");
+                writer.print(getBody());
+            }
         }
 
         writer.flush();
