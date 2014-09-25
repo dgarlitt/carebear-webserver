@@ -71,13 +71,6 @@ public class Server {
             }
         }
 
-        StringBuffer sb = new StringBuffer();
-        sb.append("Server starting, port: ");
-        sb.append(portString);
-        sb.append(", document root: ");
-        sb.append(path);
-        System.out.println(sb.toString());
-
         Server server = new Server(new InternetServerSocket());
         server.setPort(Integer.parseInt(portString));
         server.setDocumentRoot(path);

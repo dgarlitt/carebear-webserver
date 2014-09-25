@@ -18,10 +18,6 @@ public class RedirectServlet extends CareBearServlet {
         res.setStatusCode(302);
         res.setHeader("Location", "http://localhost:5000/");
         res.send();
-//        PrintWriter writer = res.getWriter();
-//        writer.println("HTTP/1.0 302");
-//        writer.println("Location: http://localhost:5000/");
-//        writer.flush();
     }
 
     @Override
