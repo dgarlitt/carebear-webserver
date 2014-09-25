@@ -68,9 +68,9 @@ public class ServletTest {
     @Test
     public void ItHandlesRequestWithParameters() throws Exception {
         FakeParameterServlet parameterServlet = new FakeParameterServlet();
-        Request request = new Request("GET /parameter?test=123 HTTP/1.0");
+        Request request = new Request("GET /parameter?test=123&test1=345 HTTP/1.0");
         parameterServlet.doGet(request, response);
-        assertEquals("HTTP/1.0 200\ntest = 123\n", getString());
+        assertEquals("HTTP/1.0 200\ntest = 123\ntest1 = 345\n", getString());
     }
 
 }

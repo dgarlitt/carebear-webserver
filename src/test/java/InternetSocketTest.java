@@ -1,6 +1,6 @@
 import com.carebears.CareBearHttpHandler;
 import com.carebears.CareBearServerSocket;
-import com.carebears.FakeHttpHandler;
+import testoutput.fakes.FakeHttpHandler;
 import com.carebears.InternetServerSocket;
 import org.junit.Before;
 import org.junit.Test;
