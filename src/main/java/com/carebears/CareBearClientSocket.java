@@ -1,6 +1,6 @@
 package com.carebears;
 
-public interface CareBearClentSocket {
+public interface CareBearClientSocket {
     public void close() throws java.io.IOException;
 
     public String getInput();
