@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 
 public class DocumentRetriever {
 
-    public String getDocument(String docRoot, String path) throws FileNotFoundException {
-        if (!path.equals("foo")) {
+    public String getDocument(Request req) throws FileNotFoundException {
+        if (!req.getPath().equals("foo")) {
             throw (new FileNotFoundException("Not found"));
         }
         return("");

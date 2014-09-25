@@ -1,4 +1,5 @@
 import com.carebears.DocumentRetriever;
+import com.carebears.Request;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,9 @@ public class DocumentRetrieverTest {
         boolean docFound = true;
 
         try {
-            String document = docRetriever.getDocument("/foo", "/IDontExist");
+            Request request = new Request("GET /IDontExist HTTP/1.1", "/foo");
+
+            String document = docRetriever.getDocument(request);
         }
         catch(FileNotFoundException ex) {
             docFound = false;
