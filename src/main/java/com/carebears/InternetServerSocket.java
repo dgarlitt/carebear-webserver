@@ -46,9 +46,22 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
 
                 handler.handle(input, out);
                 socket.close();
+                Thread.sleep(100);
             }
             catch(IOException ex) {
-
+                ex.printStackTrace();
+                break;
+            }
+            catch(InterruptedException ex) {
+                if (serverSocket != null) {
+                    try {
+                        serverSocket.close();
+                    }
+                    catch(Exception ex2) {
+                        ex2.printStackTrace();
+                    }
+                }
+                break;
             }
         }
     }
