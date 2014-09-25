@@ -53,7 +53,7 @@ public class ServletTest {
     public void ItHandlesRedirectRequest() throws Exception {
         FakeRedirectServlet redirectServlet = new FakeRedirectServlet();
         Request request = new Request("GET / HTTP/1.0");
-        redirectServlet.doGet(request, response);
+        redirectServlet.doGet(request, response); 
         assertEquals("HTTP/1.0 302\nLocation: redirect here\n", getString());
     }
 
