@@ -1,5 +1,7 @@
 package com.carebears;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -10,6 +12,8 @@ public class InternetHttpHandler extends CareBearHttpHandler {
     public void handle(String request, PrintWriter writer) {
         Request reqObj = new Request(request);
         Response resObj = new Response(writer);
+
+        reqObj.setDocRoot(getDocumentRoot());
 
         CareBearServlet servlet = getServletByPath(reqObj.getPath());
 
@@ -30,8 +34,16 @@ public class InternetHttpHandler extends CareBearHttpHandler {
             }
         }
         else {
-            writer.println("HTTP/1.0 404");
-            writer.flush();
+            DocumentRetriever documentRetriever = new DocumentRetriever();
+            try {
+                String documentContent = documentRetriever.getDocument(reqObj);
+                writer.write(documentContent);
+                writer.flush();
+            }
+            catch(FileNotFoundException ex) {
+                writer.println("HTTP/1.0 404");
+                writer.flush();
+            }
         }
     }
 

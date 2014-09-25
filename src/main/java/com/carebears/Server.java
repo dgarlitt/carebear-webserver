@@ -10,10 +10,12 @@ public class Server {
     private int port = 80;
     private CareBearServerSocket serverSocket;
     private InternetHttpHandler handler;
+    private String documentRoot = "/";
 
     public Server(CareBearServerSocket sock) {
         this.serverSocket = sock;
         this.handler = new InternetHttpHandler();
+        handler.setDocumentRoot(documentRoot);
 
         handler.registerServlet(new FormServlet());
         handler.registerServlet(new RootServlet());
@@ -26,6 +28,14 @@ public class Server {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public void setDocumentRoot(String documentRoot) {
+        this.documentRoot = documentRoot;
+    }
+
+    public String getDocumentRoot() {
+        return documentRoot;
     }
 
     public void initialize() throws IOException {
@@ -41,8 +51,36 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException {
+        String path = "/";
+        String portString = "5000";
+        int numArgs = args.length;
+
+        if (numArgs == 2 || numArgs == 4) {
+            int xctr = 0;
+
+            while(xctr < numArgs) {
+                if (args[xctr].equals("-p")) {
+                    portString = args[xctr + 1];
+                    xctr += 2;
+                } else if (args[xctr].equals("-d")) {
+                    path = args[xctr + 1];
+                    xctr += 2;
+                } else {
+                    System.out.println("Invalid argument: " + args[xctr]);
+                }
+            }
+        }
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("Server starting, port: ");
+        sb.append(portString);
+        sb.append(", document root: ");
+        sb.append(path);
+        System.out.println(sb.toString());
+
         Server server = new Server(new InternetServerSocket());
-        server.setPort(5000);
+        server.setPort(Integer.parseInt(portString));
+        server.setDocumentRoot(path);
         server.initialize();
     }
 
