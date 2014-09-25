@@ -2,6 +2,8 @@ import com.carebears.Request;
 import com.carebears.Response;
 import org.junit.Before;
 import org.junit.Test;
+import testoutput.fakes.FakeRedirectServlet;
+import testoutput.fakes.FakeServlet;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -45,6 +47,14 @@ public class ServletTest {
         Request request = new Request("POST / HTTP/1.0");
         fakeServlet.doPost(request, response);
         assertEquals("HTTP/1.0 404\n", getString());
+    }
+
+    @Test
+    public void ItHandlesRedirectRequest() throws Exception {
+        FakeRedirectServlet redirectServlet = new FakeRedirectServlet();
+        Request request = new Request("GET / HTTP/1.0");
+        redirectServlet.doGet(request, response);
+        assertEquals("HTTP/1.0 302\nLocation: redirect here\n", getString());
     }
 
 }

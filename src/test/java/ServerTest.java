@@ -2,6 +2,8 @@
 import com.carebears.InternetHttpHandler;
 import com.carebears.Server;
 import org.junit.Test;
+import testoutput.fakes.FakeServerSocket;
+
 import static org.junit.Assert.*;
 
 public class ServerTest {

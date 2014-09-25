@@ -1,3 +1,5 @@
+package testoutput.fakes;
+
 import com.carebears.CareBearHttpHandler;
 import com.carebears.CareBearServerSocket;
 
