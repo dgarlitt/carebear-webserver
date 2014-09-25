@@ -1,4 +1,6 @@
-package com.carebears;
+package testoutput.fakes;
+
+import com.carebears.CareBearHttpHandler;
 
 import java.io.PrintWriter;
 
