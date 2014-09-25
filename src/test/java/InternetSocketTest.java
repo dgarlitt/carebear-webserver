@@ -45,6 +45,7 @@ public class InternetSocketTest {
         }
         finally {
             client.close();
+            socket.stopSocket();
         }
 
     }

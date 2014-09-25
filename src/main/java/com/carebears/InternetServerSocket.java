@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.net.SocketException;
 
 public class InternetServerSocket extends Thread implements CareBearServerSocket {
     private Socket socket;
@@ -25,14 +24,19 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
             serverSocket = new ServerSocket(port);
             this.start();
         }
-        catch (Exception e)
-        {
-            if (serverSocket != null)
-                try {
-                    serverSocket.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+        catch (Exception e) {
+            stopSocket();
+        }
+    }
+
+    public void stopSocket() {
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            }
+            catch(IOException ex) {
+                System.out.println("InternetServerSocket: Exception closing server socket");
+            }
         }
     }
 
@@ -53,14 +57,7 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
                 break;
             }
             catch(InterruptedException ex) {
-                if (serverSocket != null) {
-                    try {
-                        serverSocket.close();
-                    }
-                    catch(Exception ex2) {
-                        ex2.printStackTrace();
-                    }
-                }
+                stopSocket();
                 break;
             }
         }

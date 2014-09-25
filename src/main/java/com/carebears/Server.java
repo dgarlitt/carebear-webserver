@@ -33,7 +33,7 @@ public class Server {
     }
 
     public void stopServer() {
-        serverSocket.stop();
+        serverSocket.stopSocket();
     }
 
     public InternetHttpHandler getHTTPHandler() {
