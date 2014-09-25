@@ -9,7 +9,7 @@ public class FakeServerSocket implements CareBearServerSocket {
         started = true;
     }
 
-    public void stop() {
+    public void stopSocket() {
         started = false;
     }
 }
