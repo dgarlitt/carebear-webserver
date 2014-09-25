@@ -1,6 +1,7 @@
 package com.carebears;
 
 import com.carebears.servlets.FormServlet;
+import com.carebears.servlets.RedirectServlet;
 import com.carebears.servlets.RootServlet;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class Server {
 
         handler.registerServlet(new FormServlet());
         handler.registerServlet(new RootServlet());
+        handler.registerServlet(new RedirectServlet());
     }
 
     public int getPort() {
