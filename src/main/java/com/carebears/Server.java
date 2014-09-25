@@ -59,7 +59,7 @@ public class Server {
             int xctr = 0;
 
             while(xctr < numArgs) {
-                if (args[xctr].equals("-r")) {
+                if (args[xctr].equals("-p")) {
                     portString = args[xctr + 1];
                     xctr += 2;
                 } else if (args[xctr].equals("-d")) {
@@ -70,6 +70,14 @@ public class Server {
                 }
             }
         }
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("Server starting, port: ");
+        sb.append(portString);
+        sb.append(", document root: ");
+        sb.append(path);
+        System.out.println(sb.toString());
+
         Server server = new Server(new InternetServerSocket());
         server.setPort(Integer.parseInt(portString));
         server.setDocumentRoot(path);
