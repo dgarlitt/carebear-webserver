@@ -1,14 +1,13 @@
 import com.carebears.CareBearHttpHandler;
-import com.carebears.CareBearSocket;
+import com.carebears.CareBearServerSocket;
 import com.carebears.FakeHttpHandler;
-import com.carebears.InternetSocket;
+import com.carebears.InternetServerSocket;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.InetAddress;
 
 import static org.junit.Assert.assertEquals;
@@ -25,11 +24,11 @@ public class InternetSocketTest {
     public void StartsTheSocket() throws Exception
     {
         InetAddress host = InetAddress.getLocalHost();
-        final CareBearSocket socket = new InternetSocket();
+        final CareBearServerSocket socket = new InternetServerSocket();
 
         new Thread() {
             public void run() {
-                socket.start(handler);
+                socket.start(handler, 5000);
             }
         }.start();
 

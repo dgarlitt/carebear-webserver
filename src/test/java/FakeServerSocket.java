@@ -1,11 +1,15 @@
 import com.carebears.CareBearHttpHandler;
-import com.carebears.CareBearSocket;
+import com.carebears.CareBearServerSocket;
 
-public class FakeServerSocket implements CareBearSocket {
+public class FakeServerSocket implements CareBearServerSocket {
     public boolean started;
 
     @Override
-    public void start(CareBearHttpHandler handler) {
+    public void start(CareBearHttpHandler handler, int port) {
         started = true;
+    }
+
+    public void stop() {
+        started = false;
     }
 }

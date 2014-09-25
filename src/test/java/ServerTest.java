@@ -1,8 +1,8 @@
 
 import com.carebears.InternetHttpHandler;
+import com.carebears.Server;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import com.carebears.Server;
 
 public class ServerTest {
     @Test
@@ -21,6 +21,18 @@ public class ServerTest {
         server.initialize();
 
         assertTrue(socket.started);
+    }
+
+    @Test
+    public void itStopsTheServer() throws Exception {
+        FakeServerSocket socket = new FakeServerSocket();
+        Server server = new Server(socket);
+
+        server.initialize();
+        server.stopServer();
+
+        assertEquals(false, socket.started);
+
     }
     
     @Test

@@ -4,13 +4,19 @@ import com.carebears.servlets.FormServlet;
 import com.carebears.servlets.RootServlet;
 
 import java.io.IOException;
-import java.net.Socket;
 
-public class Server extends Thread {
-
-    private CareBearSocket serverSocket;
-    private Socket socket;
+public class Server {
+    private int port = 80;
+    private CareBearServerSocket serverSocket;
     private InternetHttpHandler handler;
+
+    public Server(CareBearServerSocket sock) {
+        this.serverSocket = sock;
+        this.handler = new InternetHttpHandler();
+
+        handler.registerServlet(new FormServlet());
+        handler.registerServlet(new RootServlet());
+    }
 
     public int getPort() {
         return port;
@@ -20,64 +26,22 @@ public class Server extends Thread {
         this.port = port;
     }
 
-    private int port;
-
-    public static void main(String[] args) throws IOException {
-        Server server = new Server(new InternetSocket());
-        server.initialize();
-    }
-
-    public Server(CareBearSocket sock) {
-        this.serverSocket = sock;
-        this.handler = new InternetHttpHandler();
-
-        handler.registerServlet(new FormServlet());
-        handler.registerServlet(new RootServlet());
-        this.start();
-    }
-
     public void initialize() throws IOException {
-        serverSocket.start(handler);
-        //socket = serverSocket.accept();
-//        processConnection();
+        serverSocket.start(handler, port);
+    }
+
+    public void stopServer() {
+        serverSocket.stop();
     }
 
     public InternetHttpHandler getHTTPHandler() {
         return handler;
     }
 
-//    public void processConnection() {
-//        PrintWriter writer;
-//        BufferedReader reader;
-//
-//        try {
-//            writer = new PrintWriter(socket.getOutputStream());
-//            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//
-//            String request = reader.readLine();
-////            String[] rParams = request.split(" ");
-////            String method = rParams[0];
-////            String path = rParams[1];
-////            String version = rParams[2];
-////
-////            System.out.println(path);
-////
-////            if (method.equals("GET") && path.equals("/")) {
-////                writer.println("HTTP/1.0 200 OK");
-////            } else if (method.equals("POST") && path.equals("/form")) {
-////                writer.println("HTTP/1.0 200 OK");
-////            } else {
-////                writer.println("HTTP/1.0 404");
-////            }
-////            writer.flush();
-//            socket.close();
-//        } catch (IOException e) {
-//            // handle exception here
-//        }
-//    }
-
-    public Socket getSocket() {
-        return socket;
+    public static void main(String[] args) throws IOException {
+        Server server = new Server(new InternetServerSocket());
+        server.setPort(5000);
+        server.initialize();
     }
 
 }
