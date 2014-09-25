@@ -48,4 +48,10 @@ public abstract class CareBearServlet {
         writer.flush();
     }
 
+//    public void listDirectory(Request req, Response res) {
+//        DirectoryReader reader = new DirectoryReader(req.getDocumentRoot());
+//        res.write(reader.formatDirectoryListing());
+//        res.flush();
+//    }
+
 }

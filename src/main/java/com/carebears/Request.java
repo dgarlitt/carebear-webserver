@@ -41,4 +41,8 @@ public class Request {
     public void setDocRoot(String documentRoot) {
         docRoot = documentRoot;
     }
+
+    public String getDocRoot() {
+        return docRoot;
+    }
 }
