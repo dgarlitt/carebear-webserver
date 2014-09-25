@@ -10,7 +10,7 @@ public class Request {
     public Request(String rawRequest) {
         String[] rParams = rawRequest.split(" ");
         this.method = rParams[0];
-        this.path = rParams[1];
+        this.path = rParams[1].split("\\?")[0];
         this.version = rParams[2];
     }
 
