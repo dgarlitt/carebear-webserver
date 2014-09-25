@@ -1,3 +1,5 @@
+package testoutput.fakes;
+
 import com.carebears.CareBearServlet;
 import com.carebears.Request;
 import com.carebears.Response;
@@ -21,6 +23,8 @@ public class FakeServlet extends CareBearServlet{
         writer.println("HTTP/1.0 200");
         writer.flush();
     }
+
+
 
 
 }

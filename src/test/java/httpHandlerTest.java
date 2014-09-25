@@ -2,6 +2,7 @@ import com.carebears.InternetHttpHandler;
 import com.carebears.CareBearServlet;
 import org.junit.Before;
 import org.junit.Test;
+import testoutput.fakes.FakeServlet;
 
 import static org.junit.Assert.assertEquals;
 
