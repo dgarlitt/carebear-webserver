@@ -6,7 +6,7 @@ import com.carebears.servlets.RootServlet;
 import java.io.IOException;
 import java.net.Socket;
 
-public class Server {
+public class Server extends Thread {
 
     private CareBearSocket serverSocket;
     private Socket socket;
@@ -24,7 +24,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         Server server = new Server(new InternetSocket());
-        server.start();
+        server.initialize();
     }
 
     public Server(CareBearSocket sock) {
@@ -33,9 +33,10 @@ public class Server {
 
         handler.registerServlet(new FormServlet());
         handler.registerServlet(new RootServlet());
+        this.start();
     }
 
-    public void start() throws IOException {
+    public void initialize() throws IOException {
         serverSocket.start(handler);
         //socket = serverSocket.accept();
 //        processConnection();

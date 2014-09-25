@@ -18,7 +18,7 @@ public class ServerTest {
         FakeServerSocket socket = new FakeServerSocket();
         Server server = new Server(socket);
 
-        server.start();
+        server.initialize();
 
         assertTrue(socket.started);
     }
