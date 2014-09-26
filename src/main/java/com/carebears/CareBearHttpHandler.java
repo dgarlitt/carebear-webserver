@@ -7,12 +7,10 @@ public abstract class CareBearHttpHandler {
 
     public abstract void handle(String request, PrintWriter writer);
 
-    public void setDocumentRoot(String documentRoot) {
-        this.documentRoot = documentRoot;
-    }
+    public void registerServlet(CareBearServlet servlet) {}
 
-    public String getDocumentRoot() {
-        return documentRoot;
+    public CareBearServlet getServletByPath(String path) {
+        return null;
     }
 
 }

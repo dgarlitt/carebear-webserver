@@ -12,5 +12,4 @@ public class FakeHttpHandler extends CareBearHttpHandler {
         writer.flush();
     }
 
-
 }

@@ -13,7 +13,7 @@ public class InternetHttpHandler extends CareBearHttpHandler {
         Request reqObj = new Request(request);
         Response resObj = new Response(writer);
 
-        reqObj.setDocRoot(getDocumentRoot());
+        reqObj.setDocRoot(Server.CONFIG.getDocumentRoot());
 
         CareBearServlet servlet = getServletByPath(reqObj.getPath());
 
@@ -59,14 +59,6 @@ public class InternetHttpHandler extends CareBearHttpHandler {
         }
 
         return null;
-    }
-
-    public void setDocumentRoot(String documentRoot) {
-        this.documentRoot = documentRoot;
-    }
-
-    public String getDocumentRoot() {
-        return documentRoot;
     }
 
 }

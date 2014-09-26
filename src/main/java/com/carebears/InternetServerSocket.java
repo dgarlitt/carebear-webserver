@@ -8,23 +8,23 @@ import java.net.Socket;
 import java.net.ServerSocket;
 
 public class InternetServerSocket extends Thread implements CareBearServerSocket {
+    private int port;
     private Socket socket;
     private ServerSocket serverSocket = null;
     private CareBearHttpHandler handler = null;
-
-    public InternetServerSocket() {
-    }
+    private Boolean running = true;
+    public InternetServerSocket() {}
 
     @Override
-    public void start(CareBearHttpHandler handler, int port) {
+    public void start(CareBearHttpHandler handler) {
         serverSocket = null;
         this.handler = handler;
 
         try {
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(Server.CONFIG.getPort());
             this.start();
-        }
-        catch (Exception e) {
+
+        } catch (IOException e) {
             stopSocket();
         }
     }
@@ -41,7 +41,7 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
     }
 
     public void run() {
-        while(true) {
+        while(isRunning()) {
             try {
                 socket = serverSocket.accept();
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
@@ -64,6 +64,10 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
                 ex.printStackTrace();
             }
         }
+    }
+
+    public synchronized boolean isRunning() {
+        return this.running;
     }
 
 }

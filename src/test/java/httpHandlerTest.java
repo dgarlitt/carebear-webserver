@@ -15,12 +15,6 @@ public class httpHandlerTest {
     }
 
     @Test
-    public void DocumentRootTest() throws Exception {
-        handler.setDocumentRoot("/foo");
-        assertEquals("/foo", handler.getDocumentRoot());
-    }
-
-    @Test
     public void ItAddsAServlet() throws Exception {
         FakeServlet fakeServlet = new FakeServlet();
         fakeServlet.setPath("/fake");

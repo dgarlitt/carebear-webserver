@@ -1,5 +1,6 @@
 import com.carebears.CareBearHttpHandler;
 import com.carebears.CareBearServerSocket;
+import com.carebears.Server;
 import testoutput.fakes.FakeHttpHandler;
 import com.carebears.InternetServerSocket;
 import org.junit.Before;
@@ -24,15 +25,15 @@ public class InternetSocketTest {
     public void StartsTheSocket() throws Exception
     {
         InetAddress host = InetAddress.getLocalHost();
-        final CareBearServerSocket socket = new InternetServerSocket();
+        CareBearServerSocket server = new InternetServerSocket();
 
         new Thread() {
             public void run() {
-                socket.start(handler, 5000);
+                server.start(handler);
             }
         }.start();
 
-        java.net.Socket client = new java.net.Socket(host.getHostName(), 5000);
+        java.net.Socket client = new java.net.Socket(host.getHostName(), Server.CONFIG.getPort());
 
         try {
             PrintWriter out = new PrintWriter(client.getOutputStream());
@@ -45,7 +46,7 @@ public class InternetSocketTest {
         }
         finally {
             client.close();
-            socket.stopSocket();
+            server.stopSocket();
         }
 
     }
