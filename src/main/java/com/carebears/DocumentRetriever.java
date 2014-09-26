@@ -5,18 +5,11 @@ import java.io.*;
 public class DocumentRetriever {
 
     public String getDocument(Request req) throws FileNotFoundException {
-        String docRoot = req.getDocRoot();
-        String relPath = req.getPath();
-
-        if (relPath.charAt(0) == '/') {;
-            relPath = relPath.substring(1);
-        }
-
-        String fullPath = docRoot + File.separator + relPath;
-        File file = new File(fullPath);
+        AbsolutePathMapper absolutePathMapper = new AbsolutePathMapper(req);
+        File file = absolutePathMapper.getAbsolutePathFile();
 
         if (!file.exists()) {
-            throw new FileNotFoundException("File " + fullPath + " does not exist");
+            throw new FileNotFoundException(file.toString() + " does not exist");
         }
 
         StringBuffer sb = new StringBuffer();

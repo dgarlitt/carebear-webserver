@@ -1,6 +1,5 @@
 package com.carebears;
 
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
@@ -44,10 +43,22 @@ public abstract class CareBearServlet {
         res.send();
     }
 
-//    public void listDirectory(Request req, Response res) {
-//        DirectoryReader reader = new DirectoryReader(req.getDocumentRoot());
-//        res.write(reader.formatDirectoryListing());
-//        res.flush();
-//    }
+    public void listDirectory(Request req, Response res) {
+        DirectoryReader reader = new DirectoryReader(req);
+        String listing = reader.getFormattedListing();
+
+        StringBuffer htmlOut = new StringBuffer();
+        htmlOut.append("<html>\n<head>\n<title>Directory of ");
+        htmlOut.append(req.getPath());
+        htmlOut.append("</title>\n</head>\n<body>\n<h2>Directory of ");
+        htmlOut.append(req.getPath());
+        htmlOut.append("</h2>\n");
+        htmlOut.append(listing);
+        htmlOut.append("</html>\n");
+
+        res.setBody(htmlOut.toString());
+        res.setStatusCode(200);
+        res.send();
+    }
 
 }

@@ -36,12 +36,12 @@ public class DocumentRetrieverTest {
 
     @Test
     public void DocumentIsReturned() throws Exception {
-        File file = new File("/tmp/drtest.txt");
+        File file = new File("/tmp/docret.txt");
         PrintWriter pw = new PrintWriter(new FileOutputStream(file));
         pw.println("test");
         pw.close();
 
-        Request request = new Request("GET /drtest.txt HTTP/1.1", "/tmp");
+        Request request = new Request("GET /docret.txt HTTP/1.1", "/tmp");
 
         String document = docRetriever.getDocument(request);
 
