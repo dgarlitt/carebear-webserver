@@ -8,8 +8,7 @@ import java.net.Socket;
 import java.net.ServerSocket;
 
 public class InternetServerSocket extends Thread implements CareBearServerSocket {
-    private int port;
-    private Socket socket;
+    private Socket clientSocket;
     private ServerSocket serverSocket = null;
     private CareBearHttpHandler handler = null;
     private Boolean running = true;
@@ -43,21 +42,14 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
     public void run() {
         while(isRunning()) {
             try {
-                socket = serverSocket.accept();
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String input = in.readLine();
+                clientSocket = null;
+                clientSocket = serverSocket.accept();
 
-                handler.handle(input, out);
-                socket.close();
-                Thread.sleep(100);
+                new Thread(new WorkerBear(clientSocket, "CareBearServer")).start();
+
             }
             catch(IOException ex) {
                 ex.printStackTrace();
-                break;
-            }
-            catch(InterruptedException ex) {
-                stopSocket();
                 break;
             }
             catch(NullPointerException ex) {

@@ -26,6 +26,7 @@ public class InternetSocketTest {
     {
         InetAddress host = InetAddress.getLocalHost();
         CareBearServerSocket server = new InternetServerSocket();
+        Server.CONFIG.setHandler(new FakeHttpHandler());
 
         new Thread() {
             public void run() {
