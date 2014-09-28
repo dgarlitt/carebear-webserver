@@ -1,12 +1,6 @@
 package com.carebears;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public abstract class CareBearServlet {
-    private Map<String, String> parametersMap;
 
     public abstract String getPath();
 
