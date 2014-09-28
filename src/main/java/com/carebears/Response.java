@@ -59,7 +59,7 @@ public class Response {
         Set headerSet = headers.entrySet();
         Iterator h = headerSet.iterator();
 
-        writer.print("HTTP/1.0 " + getStatusCode());
+        writer.print("HTTP/1.1 " + getStatusCode());
         if (statusCode == 200) {
             writer.print(" OK");
         }

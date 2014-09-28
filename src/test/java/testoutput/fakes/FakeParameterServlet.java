@@ -28,7 +28,7 @@ public class FakeParameterServlet extends CareBearServlet {
             paramMap = new HashMap<>();
         }
         PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 200");
+        writer.println("HTTP/1.1 200");
 
         for (Map.Entry<String, String>param: paramMap.entrySet()) {
             writer.println(param.getKey() + " = " + param.getValue());

@@ -34,14 +34,21 @@ public class InternetHttpHandler extends CareBearHttpHandler {
             }
         }
         else {
-            DocumentRetriever documentRetriever = new DocumentRetriever();
-            try {
-                String documentContent = documentRetriever.getDocument(reqObj);
-                writer.write(documentContent);
-                writer.flush();
-            }
-            catch(FileNotFoundException ex) {
+            if (reqObj.getMethod().equals("OPTIONS")) {
                 resObj.setStatusCode(404);
+                resObj.send();
+            } else if (reqObj.getMethod().equals("GET")) {
+                DocumentRetriever documentRetriever = new DocumentRetriever();
+                try {
+                    String documentContent = documentRetriever.getDocument(reqObj);
+                    writer.write(documentContent);
+                    writer.flush();
+                } catch (FileNotFoundException ex) {
+                    resObj.setStatusCode(404);
+                    resObj.send();
+                }
+            } else {
+                resObj.setStatusCode(405);
                 resObj.send();
             }
         }

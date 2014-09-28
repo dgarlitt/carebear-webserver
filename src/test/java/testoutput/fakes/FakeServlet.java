@@ -20,7 +20,7 @@ public class FakeServlet extends CareBearServlet{
     @Override
     public void doGet(Request req, Response res) {
         PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 200");
+        writer.println("HTTP/1.1 200");
         writer.flush();
     }
 

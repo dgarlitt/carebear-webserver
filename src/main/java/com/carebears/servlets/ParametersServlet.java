@@ -25,7 +25,7 @@ public class ParametersServlet extends CareBearServlet {
             paramMap = new HashMap<>();
         }
         PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 200");
+        writer.println("HTTP/1.1 200");
 
         writer.println("\n");
         for (Map.Entry<String, String>param: paramMap.entrySet()) {

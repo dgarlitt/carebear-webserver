@@ -20,7 +20,7 @@ public class FakeRedirectServlet extends CareBearServlet{
     @Override
     public void doGet(Request req, Response res) {
         PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.0 302");
+        writer.println("HTTP/1.1 302");
         writer.println("Location: redirect here");
         writer.flush();
     }

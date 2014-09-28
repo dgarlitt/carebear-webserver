@@ -59,7 +59,7 @@ public class ResponseTest {
 
     @Test
     public void ItWritesTheDefaultResponse() throws Exception {
-        String expected = "HTTP/1.0 404\n";
+        String expected = "HTTP/1.1 404\n";
         response.send();
 
         assertEquals(expected, swriter.getBuffer().toString());
@@ -75,7 +75,7 @@ public class ResponseTest {
     @Test
     public void ItWritesTheExpectedResponse() throws Exception {
         response.setStatusCode(200);
-        String expected =   "HTTP/1.0 " + response.getStatusCode() + " OK\n" +
+        String expected =   "HTTP/1.1 " + response.getStatusCode() + " OK\n" +
                             "Server: " + response.getHeader("Server") + "\n" +
                             "Accept-Language: " + response.getHeader("Accept-Language") + "\n" +
                             "Content-Type: " + response.getHeader("Content-Type") + "\n";
