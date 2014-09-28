@@ -10,19 +10,6 @@ public abstract class CareBearServlet {
 
     public abstract String getPath();
 
-    public Map<String, String> getParameters(Request req) throws UnsupportedEncodingException {
-        parametersMap = new LinkedHashMap<>();
-        String[] paramArray = req.getUrlParameters().split("&");
-
-        for(String pair: paramArray) {
-            int paramIndex = pair.indexOf("=");
-            parametersMap.put(URLDecoder.decode(pair.substring(0, paramIndex), "UTF-8"), URLDecoder.decode(pair.substring(paramIndex + 1), "UTF-8"));
-
-        }
-
-        return parametersMap;
-    }
-
     public void doPost(Request req, Response res) {
         res.setStatusCode(405);
         res.send();

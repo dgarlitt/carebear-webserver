@@ -5,7 +5,7 @@ import com.carebears.Request;
 import com.carebears.Response;
 
 import java.io.PrintWriter;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ParametersServlet extends CareBearServlet {
@@ -20,9 +20,9 @@ public class ParametersServlet extends CareBearServlet {
 
         Map<String, String> paramMap;
         try {
-            paramMap = super.getParameters(req);
+            paramMap = req.getParameters();
         } catch(Exception e) {
-            paramMap = new LinkedHashMap<>();
+            paramMap = new HashMap<>();
         }
         PrintWriter writer = res.getWriter();
         writer.println("HTTP/1.0 200");

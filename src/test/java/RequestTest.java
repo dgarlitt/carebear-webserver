@@ -18,7 +18,13 @@ public class RequestTest {
         assertEquals("GET", request.getMethod());
         assertEquals("/fake", request.getPath());
         assertEquals("HTTP/1.0", request.getVersion());
-        assertEquals("var=123", request.getUrlParameters());
+        assertEquals("{var=123}", request.getParameters().toString());
+    }
+
+    @Test
+    public void getParam() throws Exception {
+        Request request = new Request("GET /fake?var=123 HTTP/1.0");
+        assertEquals("123", request.getParam("var"));
     }
 
 }

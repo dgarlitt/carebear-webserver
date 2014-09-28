@@ -8,6 +8,7 @@ import testoutput.fakes.FakeServlet;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -62,7 +63,7 @@ public class ServletTest {
     public void ItGetsMapOfRequestParameters() throws Exception {
         FakeParameterServlet parameterServlet = new FakeParameterServlet();
         Request request = new Request("GET /parameter?test=123 HTTP/1.0");
-        Map<String, String> paramMap = parameterServlet.getParameters(request);
+        HashMap<String, String> paramMap = request.getParameters();
         assertEquals("123", paramMap.get("test"));
     }
     @Test

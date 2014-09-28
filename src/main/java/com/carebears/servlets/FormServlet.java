@@ -19,7 +19,11 @@ public class FormServlet extends CareBearServlet {
     @Override
     public void doGet(Request req, Response res) {
         res.setStatusCode(200);
-        res.setBody("data=cosby");
+        res.setBody("data = cosby");
+//        if (!req.getParam("data").isEmpty()) {
+//            res.setBody("data = " + req.getParam("data"));
+//        }
+        res.send();
     }
 
     @Override
