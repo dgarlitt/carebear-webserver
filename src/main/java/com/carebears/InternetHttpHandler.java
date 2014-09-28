@@ -31,13 +31,16 @@ public class InternetHttpHandler extends CareBearHttpHandler {
                 case "DELETE":
                     servlet.doDelete(reqObj, resObj);
                     break;
+                case "OPTIONS":
+                    servlet.doOptions(reqObj, resObj);
+                    break;
+                case "HEAD":
+                    servlet.doHead(reqObj, resObj);
+                    break;
             }
         }
         else {
-            if (reqObj.getMethod().equals("OPTIONS")) {
-                resObj.setStatusCode(404);
-                resObj.send();
-            } else if (reqObj.getMethod().equals("GET")) {
+            if (reqObj.getMethod().equals("GET")) {
                 DocumentRetriever documentRetriever = new DocumentRetriever();
                 try {
                     String documentContent = documentRetriever.getDocument(reqObj);
@@ -47,6 +50,7 @@ public class InternetHttpHandler extends CareBearHttpHandler {
                     resObj.setStatusCode(404);
                     resObj.send();
                 }
+
             } else {
                 resObj.setStatusCode(405);
                 resObj.send();

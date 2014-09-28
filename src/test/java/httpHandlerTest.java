@@ -49,6 +49,12 @@ public class httpHandlerTest {
         handler.handle("DELETE /file.txt HTTP/1.1", getWriter());
         assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
 
+        handler.handle("OPTIONS /file.txt HTTP/1.1", getWriter());
+        assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
+
+        handler.handle("HEAD /file.txt HTTP/1.1", getWriter());
+        assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
+
         handler.handle("GET /file.txt HTTP/1.1", getWriter());
         assertEquals("HTTP/1.1 404\n", sw.getBuffer().toString());
     }

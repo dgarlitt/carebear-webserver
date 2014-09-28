@@ -59,6 +59,7 @@ public class ServletTest {
         redirectServlet.doGet(request, response); 
         assertEquals("HTTP/1.1 302\nLocation: redirect here\n", getString());
     }
+
     @Test
     public void ItGetsMapOfRequestParameters() throws Exception {
         FakeParameterServlet parameterServlet = new FakeParameterServlet();
@@ -66,12 +67,20 @@ public class ServletTest {
         HashMap<String, String> paramMap = request.getParameters();
         assertEquals("123", paramMap.get("test"));
     }
+
     @Test
     public void ItHandlesRequestWithParameters() throws Exception {
         FakeParameterServlet parameterServlet = new FakeParameterServlet();
         Request request = new Request("GET /parameter?test=123&test1=345 HTTP/1.1");
         parameterServlet.doGet(request, response);
         assertEquals("HTTP/1.1 200\ntest = 123\ntest1 = 345\n", getString());
+    }
+
+    @Test
+    public void DefaultDoOptionsResponseHasAllowHeader() throws Exception {
+        Request request = new Request("OPTIONS / HTTP/1.1");
+        fakeServlet.doOptions(request, response);
+        assertEquals("GET,HEAD,POST,OPTIONS,PUT", response.getHeader("Allow"));
     }
 
 }

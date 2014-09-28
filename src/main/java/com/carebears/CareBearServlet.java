@@ -24,6 +24,18 @@ public abstract class CareBearServlet {
         res.send();
     }
 
+    public void doOptions(Request req, Response res) {
+        res.setStatusCode(200);
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        res.setHeader("Allow", "GET,HEAD,POST,OPTIONS,PUT");
+        res.send();
+    }
+
+    public void doHead(Request req, Response res) {
+        res.setStatusCode(405);
+        res.send();
+    }
+
     public void listDirectory(Request req, Response res) {
         DirectoryReader reader = new DirectoryReader(req);
         String listing = reader.getFormattedListing();
