@@ -24,21 +24,26 @@ public class InternetSocketTest {
     @Test
     public void StartsTheSocket() throws Exception
     {
+        Thread thread;
+        PrintWriter out = null;
+        BufferedReader in = null;
         InetAddress host = InetAddress.getLocalHost();
         CareBearServerSocket server = new InternetServerSocket();
         Server.CONFIG.setHandler(new FakeHttpHandler());
 
-        new Thread() {
+        thread = new Thread() {
             public void run() {
                 server.start(handler);
             }
-        }.start();
+        };
+
+        thread.start();
 
         java.net.Socket client = new java.net.Socket(host.getHostName(), Server.CONFIG.getPort());
 
         try {
-            PrintWriter out = new PrintWriter(client.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            out = new PrintWriter(client.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
             out.println("Test");
             out.flush();
@@ -46,6 +51,9 @@ public class InternetSocketTest {
             assertEquals("Test", in.readLine());
         }
         finally {
+            in.close();
+            out.close();
+            thread.join();
             client.close();
             server.stopSocket();
         }

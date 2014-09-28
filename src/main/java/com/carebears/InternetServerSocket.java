@@ -1,14 +1,12 @@
 package com.carebears;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.net.SocketException;
 
 public class InternetServerSocket extends Thread implements CareBearServerSocket {
-    private Socket clientSocket;
+    private Socket workerSocket;
     private ServerSocket serverSocket = null;
     private CareBearHttpHandler handler = null;
     private Boolean running = true;
@@ -29,31 +27,33 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
     }
 
     public void stopSocket() {
-        if (serverSocket != null) {
-            try {
-                serverSocket.close();
-            }
-            catch(IOException ex) {
-                System.out.println("InternetServerSocket: Exception closing server socket");
-            }
+        try {
+            serverSocket.close();
+        }
+        catch(Exception e) {
+            System.out.println("InternetServerSocket: Exception closing server socket");
         }
     }
 
     public void run() {
         while(isRunning()) {
             try {
-                clientSocket = null;
-                clientSocket = serverSocket.accept();
+                workerSocket = null;
+                workerSocket = serverSocket.accept();
 
-                new Thread(new WorkerBear(clientSocket, "CareBearServer")).start();
+                new Thread(new WorkerBear(workerSocket, "CareBearServer")).start();
 
+            }
+            catch(SocketException e) {
+                System.out.println(e.getMessage());
+                break;
             }
             catch(IOException ex) {
                 ex.printStackTrace();
                 break;
             }
-            catch(NullPointerException ex) {
-                ex.printStackTrace();
+            catch(NullPointerException e) {
+                e.printStackTrace();
             }
         }
     }

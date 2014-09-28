@@ -8,12 +8,13 @@ import java.net.Socket;
 
 public class WorkerBear implements Runnable {
 
-    private Socket clientSocket = null;
+    private Socket workerSocket = null;
     private String serverText = null;
 
-    public WorkerBear(Socket clientSocket, String serverText) {
-        this.clientSocket = clientSocket;
+    public WorkerBear(Socket workerSocket, String serverText) {
+        this.workerSocket = workerSocket;
         this.serverText = serverText;
+
     }
 
     public void run() {
@@ -21,16 +22,17 @@ public class WorkerBear implements Runnable {
         BufferedReader in = null;
         String input;
         try {
-            out = new PrintWriter(clientSocket.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new PrintWriter(workerSocket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(workerSocket.getInputStream()));
             input = in.readLine();
             Server.CONFIG.getHandler().handle(input, out);
-            clientSocket.close();
+            workerSocket.close();
 
         } catch(IOException e) {
             throw(new RuntimeException("Client socket failed to load"));
 
-        } finally {
+        }
+        finally {
             if (out != null)
                 out.close();
 
