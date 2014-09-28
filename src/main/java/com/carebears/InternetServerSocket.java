@@ -6,20 +6,18 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 
 public class InternetServerSocket extends Thread implements CareBearServerSocket {
-    private Socket workerSocket;
     private ServerSocket serverSocket = null;
-    private CareBearHttpHandler handler = null;
     private Boolean running = true;
+
     public InternetServerSocket() {}
 
     @Override
-    public void start(CareBearHttpHandler handler) {
+    public void start() {
         serverSocket = null;
-        this.handler = handler;
 
         try {
             serverSocket = new ServerSocket(Server.CONFIG.getPort());
-            this.start();
+            super.start();
 
         } catch (IOException e) {
             stopSocket();
@@ -32,17 +30,14 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
         }
         catch(Exception e) {
             System.out.println("InternetServerSocket: Exception closing server socket");
+            e.printStackTrace();
         }
     }
 
     public void run() {
         while(isRunning()) {
             try {
-                workerSocket = null;
-                workerSocket = serverSocket.accept();
-
-                createWorkerThread(workerSocket);
-
+                createWorkerThread(serverSocket.accept());
             }
             catch(SocketException e) {
                 System.out.println(e.getMessage());
@@ -55,11 +50,13 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
             catch(NullPointerException e) {
                 e.printStackTrace();
             }
+
+
         }
     }
 
     public void createWorkerThread(Socket socket) {
-        new Thread(new WorkerBear(workerSocket, "CareBearServer")).start();
+        new Thread(new WorkerBear(socket, "CareBearServer")).start();
     }
 
     public synchronized boolean isRunning() {

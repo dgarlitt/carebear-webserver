@@ -8,7 +8,7 @@ public class FakeServerSocket implements CareBearServerSocket {
     private int port;
 
     @Override
-    public void start(CareBearHttpHandler handler) {
+    public void start() {
         started = true;
     }
 

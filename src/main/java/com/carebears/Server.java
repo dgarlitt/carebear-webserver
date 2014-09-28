@@ -46,7 +46,7 @@ public class Server {
         handler.registerServlet(new RedirectServlet());
         handler.registerServlet(new ParametersServlet());
 
-        CONFIG.getServerSocket().start(handler);
+        CONFIG.getServerSocket().start();
     }
 
 }

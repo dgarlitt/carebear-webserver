@@ -1,9 +1,6 @@
-import com.carebears.CareBearHttpHandler;
-import com.carebears.CareBearServerSocket;
 import com.carebears.Server;
 import testoutput.fakes.FakeHttpHandler;
 import com.carebears.InternetServerSocket;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -17,30 +14,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class InternetSocketTest {
-    CareBearHttpHandler handler;
-
-    @Before
-    public void setup() {
-        handler = new FakeHttpHandler();
-    }
 
     @Test
     public void StartsTheSocketAndCreatesWorkers() throws Exception
     {
-        Thread thread;
         PrintWriter out = null;
         BufferedReader in = null;
         InetAddress host = InetAddress.getLocalHost();
-        WorkerlessServerSocket server = new WorkerlessServerSocket(); // see inner class below
+        WorkerlessServerSocket serverSocket = new WorkerlessServerSocket(); // see inner class below
         Server.CONFIG.setHandler(new FakeHttpHandler());
 
-        thread = new Thread() {
-            public void run() {
-                server.start(handler);
-            }
-        };
-
-        thread.start();
+        serverSocket.start();
 
         java.net.Socket client = new java.net.Socket(host.getHostName(), Server.CONFIG.getPort());
 
@@ -52,15 +36,13 @@ public class InternetSocketTest {
             out.flush();
 
             assertEquals("Test", in.readLine());
-            assertTrue(server.workersWereCreated());
+            assertTrue(serverSocket.workersWereCreated());
 
         }
         finally {
             in.close();
             out.close();
-            thread.join();
             client.close();
-            server.stopSocket();
         }
 
     }
