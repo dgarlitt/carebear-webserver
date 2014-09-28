@@ -41,7 +41,7 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
                 workerSocket = null;
                 workerSocket = serverSocket.accept();
 
-                new Thread(new WorkerBear(workerSocket, "CareBearServer")).start();
+                createWorkerThread(workerSocket);
 
             }
             catch(SocketException e) {
@@ -56,6 +56,10 @@ public class InternetServerSocket extends Thread implements CareBearServerSocket
                 e.printStackTrace();
             }
         }
+    }
+
+    public void createWorkerThread(Socket socket) {
+        new Thread(new WorkerBear(workerSocket, "CareBearServer")).start();
     }
 
     public synchronized boolean isRunning() {

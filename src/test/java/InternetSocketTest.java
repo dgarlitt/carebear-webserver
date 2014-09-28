@@ -7,11 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.Socket;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class InternetSocketTest {
     CareBearHttpHandler handler;
@@ -22,13 +25,13 @@ public class InternetSocketTest {
     }
 
     @Test
-    public void StartsTheSocket() throws Exception
+    public void StartsTheSocketAndCreatesWorkers() throws Exception
     {
         Thread thread;
         PrintWriter out = null;
         BufferedReader in = null;
         InetAddress host = InetAddress.getLocalHost();
-        CareBearServerSocket server = new InternetServerSocket();
+        WorkerlessServerSocket server = new WorkerlessServerSocket(); // see inner class below
         Server.CONFIG.setHandler(new FakeHttpHandler());
 
         thread = new Thread() {
@@ -49,6 +52,8 @@ public class InternetSocketTest {
             out.flush();
 
             assertEquals("Test", in.readLine());
+            assertTrue(server.workersWereCreated());
+
         }
         finally {
             in.close();
@@ -56,6 +61,38 @@ public class InternetSocketTest {
             thread.join();
             client.close();
             server.stopSocket();
+        }
+
+    }
+
+    // Created inner class that overrides the worker thread creation
+    // to avoid unwanted threads being spawned during tests
+    private class WorkerlessServerSocket extends InternetServerSocket {
+        private boolean workersCreated = false;
+
+        @Override
+        public void createWorkerThread(Socket socket) {
+            PrintWriter out;
+            BufferedReader in;
+            String input;
+
+            workersCreated = true;
+
+            try {
+                out = new PrintWriter(socket.getOutputStream());
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                input = in.readLine();
+                out.println(input);
+                out.flush();
+                socket.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public boolean workersWereCreated() {
+            return workersCreated;
         }
 
     }
