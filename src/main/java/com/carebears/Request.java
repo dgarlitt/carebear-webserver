@@ -116,20 +116,18 @@ public class Request {
     }
 
     public String getCookie(String cookie) {
-        if (cookieMap.get(cookie) != null) {
-            return cookieMap.get(cookie);
-        }
+        if (cookieMap.isEmpty()) {
+            String cookies = getHeader("Cookie");
+            String cookieArray[] = new String[]{};
 
-        String cookies = getHeader("Cookie");
-        String cookieArray[] = new String[]{};
+            if (cookies != null) {
+                cookieArray = cookies.split(";");
+            }
 
-        if (cookies != null) {
-            cookieArray = cookies.split(";");
-        }
-
-        for (int i = 0; i < cookieArray.length; i++) {
-            String[] cookieValue = cookieArray[i].split("=");
-            cookieMap.put(cookieValue[0], cookieValue[1]);
+            for (int i = 0; i < cookieArray.length; i++) {
+                String[] cookieValue = cookieArray[i].split("=");
+                cookieMap.put(cookieValue[0], cookieValue[1]);
+            }
         }
 
         return cookieMap.get(cookie);
