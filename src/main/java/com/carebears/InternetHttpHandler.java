@@ -43,9 +43,9 @@ public class InternetHttpHandler extends CareBearHttpHandler {
             if (reqObj.getMethod().equals("GET")) {
                 DocumentRetriever documentRetriever = new DocumentRetriever();
                 try {
-                    String documentContent = documentRetriever.getDocument(reqObj);
-                    writer.write(documentContent);
-                    writer.flush();
+                    documentRetriever.getDocument(reqObj, resObj);
+                    //writer.write(documentContent);
+                    //writer.flush();
                 } catch (FileNotFoundException ex) {
                     resObj.setStatusCode(404);
                     resObj.send();
