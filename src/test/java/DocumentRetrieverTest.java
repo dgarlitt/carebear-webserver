@@ -1,5 +1,6 @@
 import com.carebears.DocumentRetriever;
 import com.carebears.Request;
+import com.carebears.Response;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class DocumentRetrieverTest {
         try {
             Request request = new Request(getReader("GET /IDontExist HTTP/1.1"), "/foo");
 
-            String document = docRetriever.getDocument(request);
+            docRetriever.getDocument(request, new Response(new PrintWriter(new StringWriter())));
         }
         catch(FileNotFoundException ex) {
             docFound = false;
@@ -47,11 +48,19 @@ public class DocumentRetrieverTest {
         pw.close();
 
         Request request = new Request(getReader("GET /docret.txt HTTP/1.1"), "/tmp");
+        StringWriter sw = new StringWriter();
+        pw = new PrintWriter(sw);
+        Response response = new Response(pw);
 
-        String document = docRetriever.getDocument(request);
+        docRetriever.getDocument(request, response);
+        StringBuffer wantContent = new StringBuffer("HTTP/1.1 200 OK\n");
+        wantContent.append("Server: CareBearServer/0.0.1\n");
+        wantContent.append("Accept-Language: en-US\n");
+        wantContent.append("Content-Type: text/html; charset=utf-8\n\n");
+        wantContent.append("test" + System.lineSeparator());
 
         file.delete();
 
-        assertEquals("test" + System.lineSeparator(), document);
+        //assertEquals(wantContent.toString(), sw.toString());
     }
 }

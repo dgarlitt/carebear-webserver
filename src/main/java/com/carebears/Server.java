@@ -39,6 +39,13 @@ public class Server {
         CONFIG.setHandler(new InternetHttpHandler());
         CONFIG.setServerSocket(new InternetServerSocket());
 
+        MimeTypesStore mimeTypesStore = MimeTypesStore.getInstance();
+        mimeTypesStore.addMimeType("image/jpg jpg JPEG JPG jpeg");
+        mimeTypesStore.addMimeType("text/html htm html");
+        mimeTypesStore.addMimeType("text/plain txt TXT");
+        mimeTypesStore.addMimeType("text/javascript js");
+        mimeTypesStore.addMimeType("image/png png");
+        mimeTypesStore.addMimeType("image/gif gif");
 
         CareBearHttpHandler handler = CONFIG.getHandler();
         handler.registerServlet(new FormServlet());

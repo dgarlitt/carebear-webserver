@@ -1,6 +1,8 @@
 package com.carebears;
 
 
+import com.carebears.servlets.ParametersServlet;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -13,11 +15,13 @@ public class Request {
     private String version;
     private HashMap<String, String> headerMap;
     private HashMap<String, String> parameters;
+    private HashMap<String, String> cookieMap;
     private String docRoot;
     private String firstLine;
 
     public Request(BufferedReader rawRequest) {
         headerMap = new HashMap<>();
+        cookieMap = new HashMap<>();
 
         parseRequest(rawRequest);
         parseRequestLine(firstLine);
@@ -109,5 +113,25 @@ public class Request {
 
     public String getDocRoot() {
         return docRoot;
+    }
+
+    public String getCookie(String cookie) {
+        if (cookieMap.get(cookie) != null) {
+            return cookieMap.get(cookie);
+        }
+
+        String cookies = getHeader("Cookie");
+        String cookieArray[] = new String[]{};
+
+        if (cookies != null) {
+            cookieArray = cookies.split(";");
+        }
+
+        for (int i = 0; i < cookieArray.length; i++) {
+            String[] cookieValue = cookieArray[i].split("=");
+            cookieMap.put(cookieValue[0], cookieValue[1]);
+        }
+
+        return cookieMap.get(cookie);
     }
 }
