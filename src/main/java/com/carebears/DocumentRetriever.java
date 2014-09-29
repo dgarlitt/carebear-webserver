@@ -4,7 +4,7 @@ import java.io.*;
 
 public class DocumentRetriever {
 
-    public String getDocument(Request req) throws FileNotFoundException {
+    public void getDocument(Request req, Response resp) throws FileNotFoundException {
         AbsolutePathMapper absolutePathMapper = new AbsolutePathMapper(req);
         File file = absolutePathMapper.getAbsolutePathFile();
 
@@ -28,6 +28,6 @@ public class DocumentRetriever {
             ex.printStackTrace();
         }
 
-        return(sb.toString());
+        return;
     }
 }
