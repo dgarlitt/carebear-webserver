@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Server {
 
-    public static CareBearConfig CONFIG = new CareBearConfig();
+    public static ConfigBear CONFIG = new ConfigBear();
 
     public static void main(String[] args) throws IOException {
         String path = CONFIG.getDocumentRoot();

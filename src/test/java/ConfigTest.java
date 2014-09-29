@@ -1,7 +1,5 @@
 
-import com.carebears.CareBearConfig;
-import com.carebears.InternetHttpHandler;
-import com.carebears.Server;
+import com.carebears.ConfigBear;
 import org.junit.Before;
 import org.junit.Test;
 import testoutput.fakes.FakeHttpHandler;
@@ -10,11 +8,11 @@ import testoutput.fakes.FakeServerSocket;
 import static org.junit.Assert.*;
 
 public class ConfigTest {
-    CareBearConfig config;
+    ConfigBear config;
 
     @Before
     public void setup() {
-        config = new CareBearConfig();
+        config = new ConfigBear();
     }
 
     @Test
