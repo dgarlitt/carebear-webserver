@@ -24,8 +24,8 @@ public class WorkerBear implements Runnable {
         try {
             out = new PrintWriter(workerSocket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(workerSocket.getInputStream()));
-            input = in.readLine();
-            Server.CONFIG.getHandler().handle(input, out);
+
+            Server.CONFIG.getHandler().handle(in, out);
             workerSocket.close();
 
         } catch(IOException e) {

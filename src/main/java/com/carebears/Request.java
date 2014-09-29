@@ -1,6 +1,8 @@
 package com.carebears;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -9,28 +11,27 @@ public class Request {
     private String method;
     private String path;
     private String version;
+    private HashMap<String, String> headerMap;
     private HashMap<String, String> parameters;
     private String docRoot;
+    private String firstLine;
 
-    public Request(String rawRequest) {
-        String[] rParams = rawRequest.split(" ");
-        String[] rUrlParameters = rParams[1].split("\\?");
-        this.method = rParams[0];
-        this.path = rUrlParameters[0];
-        if (rUrlParameters.length == 2) {
-            try {
-                parseParameters(rUrlParameters[1]);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        this.version = rParams[2];
+    public Request(BufferedReader rawRequest) {
+        headerMap = new HashMap<>();
+
+        parseRequest(rawRequest);
+        parseRequestLine(firstLine);
     }
 
-    public Request(String rawRequest, String documentRoot) {
+    public Request(BufferedReader rawRequest, String documentRoot) {
         this(rawRequest);
         docRoot = documentRoot;
     }
+
+    public String getHeader(String header) {
+        return headerMap.get(header);
+    }
+
 
     public String getMethod() {
         return method;
@@ -53,6 +54,41 @@ public class Request {
             return parameters.get(param);
         }
         return "";
+    }
+
+    public void parseRequestLine(String line) {
+        String[] rParams = line.split(" ");
+        String[] rUrlParameters = rParams[1].split("\\?");
+        this.method = rParams[0];
+        this.path = rUrlParameters[0];
+        if (rUrlParameters.length == 2) {
+            try {
+                parseParameters(rUrlParameters[1]);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        this.version = rParams[2];
+    }
+
+    public void parseRequest(BufferedReader reader) {
+        StringBuilder output = new StringBuilder();
+        String headerString = null;
+        try {
+            firstLine = reader.readLine();
+            headerString = reader.readLine();
+
+            while (headerString != null && !headerString.isEmpty()) {
+                if (headerString.indexOf(":") > -1) {
+                    String[] parsedHeader = headerString.split(":");
+                    headerMap.put(parsedHeader[0], parsedHeader[1]);
+                }
+                headerString = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void parseParameters(String params) throws UnsupportedEncodingException {

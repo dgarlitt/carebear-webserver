@@ -3,16 +3,21 @@ import com.carebears.Request;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 
 import static org.junit.Assert.assertEquals;
 
 public class DocumentRetrieverTest {
     public DocumentRetriever docRetriever;
-    
+
+    private StringReader sr;
+    private BufferedReader getReader(String input) {
+        sr = null;
+        sr = new StringReader(input);
+        return new BufferedReader(sr);
+
+    }
+
     @Before
     public void setup() {
         docRetriever = new DocumentRetriever();
@@ -23,7 +28,7 @@ public class DocumentRetrieverTest {
         boolean docFound = true;
 
         try {
-            Request request = new Request("GET /IDontExist HTTP/1.1", "/foo");
+            Request request = new Request(getReader("GET /IDontExist HTTP/1.1"), "/foo");
 
             String document = docRetriever.getDocument(request);
         }
@@ -41,7 +46,7 @@ public class DocumentRetrieverTest {
         pw.println("test");
         pw.close();
 
-        Request request = new Request("GET /docret.txt HTTP/1.1", "/tmp");
+        Request request = new Request(getReader("GET /docret.txt HTTP/1.1"), "/tmp");
 
         String document = docRetriever.getDocument(request);
 

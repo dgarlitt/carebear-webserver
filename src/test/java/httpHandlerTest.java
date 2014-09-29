@@ -4,15 +4,21 @@ import org.junit.Before;
 import org.junit.Test;
 import testoutput.fakes.FakeServlet;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 
 import static org.junit.Assert.assertEquals;
 
 public class httpHandlerTest {
     InternetHttpHandler handler;
     StringWriter sw;
+
+    private StringReader sr;
+    private BufferedReader getReader(String input) {
+        sr = null;
+        sr = new StringReader(input);
+        return new BufferedReader(sr);
+
+    }
 
     @Before
     public void setsUpHttpHandler() {
@@ -40,22 +46,22 @@ public class httpHandlerTest {
 
     @Test
     public void ItReturnsMethodNotAllowed() throws Exception {
-        handler.handle("POST /make_believe_file.mbf HTTP/1.1", getWriter());
+        handler.handle(getReader("POST /make_believe_file.mbf HTTP/1.1"), getWriter());
         assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
 
-        handler.handle("PUT /file.txt HTTP/1.1", getWriter());
+        handler.handle(getReader("PUT /file.txt HTTP/1.1"), getWriter());
         assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
 
-        handler.handle("DELETE /file.txt HTTP/1.1", getWriter());
+        handler.handle(getReader("DELETE /file.txt HTTP/1.1"), getWriter());
         assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
 
-        handler.handle("OPTIONS /file.txt HTTP/1.1", getWriter());
+        handler.handle(getReader("OPTIONS /file.txt HTTP/1.1"), getWriter());
         assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
 
-        handler.handle("HEAD /file.txt HTTP/1.1", getWriter());
+        handler.handle(getReader("HEAD /file.txt HTTP/1.1"), getWriter());
         assertEquals("HTTP/1.1 405\n", sw.getBuffer().toString());
 
-        handler.handle("GET /file.txt HTTP/1.1", getWriter());
+        handler.handle(getReader("GET /file.txt HTTP/1.1"), getWriter());
         assertEquals("HTTP/1.1 404\n", sw.getBuffer().toString());
     }
 
