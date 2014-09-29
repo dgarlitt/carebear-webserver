@@ -23,7 +23,7 @@ public class FakeParameterServlet extends CareBearServlet {
     public void doGet(Request req, Response res) {
         HashMap<String, String> paramMap;
         try {
-            paramMap = req.getParameters();
+            paramMap = req.getParametersMap();
         } catch(Exception e) {
             paramMap = new HashMap<>();
         }

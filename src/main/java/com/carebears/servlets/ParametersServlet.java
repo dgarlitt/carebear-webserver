@@ -4,7 +4,6 @@ import com.carebears.CareBearServlet;
 import com.carebears.Request;
 import com.carebears.Response;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public class ParametersServlet extends CareBearServlet {
         String body = "";
 
         try {
-            paramMap = req.getParameters();
+            paramMap = req.getParametersMap();
         } catch(Exception e) {
             paramMap = new HashMap<>();
         }

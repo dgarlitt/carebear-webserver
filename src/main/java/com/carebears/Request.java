@@ -1,8 +1,6 @@
 package com.carebears;
 
 
-import com.carebears.servlets.ParametersServlet;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,7 +12,7 @@ public class Request {
     private String path;
     private String version;
     private HashMap<String, String> headerMap;
-    private HashMap<String, String> parameters;
+    private HashMap<String, String> parametersMap;
     private HashMap<String, String> cookieMap;
     private String docRoot;
     private String firstLine;
@@ -24,7 +22,6 @@ public class Request {
         cookieMap = new HashMap<>();
 
         parseRequest(rawRequest);
-        parseRequestLine(firstLine);
     }
 
     public Request(BufferedReader rawRequest, String documentRoot) {
@@ -49,13 +46,13 @@ public class Request {
         return version;
     }
 
-    public HashMap<String, String> getParameters() {
-        return parameters;
+    public HashMap<String, String> getParametersMap() {
+        return parametersMap;
     }
 
     public String getParam(String param) {
-        if (parameters.containsKey(param)) {
-            return parameters.get(param);
+        if (parametersMap.containsKey(param)) {
+            return parametersMap.get(param);
         }
         return "";
     }
@@ -76,32 +73,67 @@ public class Request {
     }
 
     public void parseRequest(BufferedReader reader) {
-        StringBuilder output = new StringBuilder();
-        String headerString = null;
+        StringBuilder sb = new StringBuilder();
         try {
             firstLine = reader.readLine();
-            headerString = reader.readLine();
+            parseRequestLine(firstLine);
 
-            while (headerString != null && !headerString.isEmpty()) {
-                if (headerString.indexOf(":") > -1) {
-                    String[] parsedHeader = headerString.split(":");
-                    headerMap.put(parsedHeader[0], parsedHeader[1]);
-                }
-                headerString = reader.readLine();
+            String line = reader.readLine();
+
+            while(line != null && !line.isEmpty()) {
+                sb.append(line + "\n");
+                line = reader.readLine();
             }
+
+            String rawRequest = sb.toString();
+            String[] rawRequestArray = rawRequest.split("\n\n");
+
+            parseHeader(rawRequestArray[0]);
+
+            if (rawRequestArray.length > 1) {
+                parseBody(rawRequestArray[1]);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
+    private void parseHeader(String header) {
+        if (!header.isEmpty()) {
+            String[] parsedHeader = header.split("\n");
+            for (int i = 0; i < parsedHeader.length; i++) {
+                String[] parsedValues = parsedHeader[i].split(":");
+                if (parsedValues.length > 1) {
+                    headerMap.put(parsedValues[0], parsedValues[1]);
+                }
+            }
+        }
+    }
+
+    private void parseBody(String body) {
+        if (!body.isEmpty()) {
+            String[] parsedBody = body.split("&");
+            for (int i = 0; i < parsedBody.length; i++) {
+                String[] parsedValues = parsedBody[i].split("=");
+                if (parametersMap.containsKey(parsedValues[0])) {
+                    parametersMap.replace(parsedValues[0], parsedValues[1]);
+                } else {
+                    parametersMap.put(parsedValues[0], parsedValues[1]);
+                }
+
+            }
+        }
+    }
+
     private void parseParameters(String params) throws UnsupportedEncodingException {
-        parameters = new HashMap<>();
+        parametersMap = new HashMap<>();
         String[] paramArray = params.split("&");
 
         for(String pair: paramArray) {
             int paramIndex = pair.indexOf("=");
-            parameters.put(URLDecoder.decode(pair.substring(0, paramIndex), "UTF-8"), URLDecoder.decode(pair.substring(paramIndex + 1), "UTF-8"));
+            parametersMap.put(URLDecoder.decode(pair.substring(0, paramIndex), "UTF-8"), URLDecoder.decode(pair.substring(paramIndex + 1), "UTF-8"));
 
         }
     }

@@ -55,7 +55,7 @@ public class RequestTest {
         assertEquals("GET", request.getMethod());
         assertEquals("/fake", request.getPath());
         assertEquals("HTTP/1.1", request.getVersion());
-        assertEquals("{var=123}", request.getParameters().toString());
+        assertEquals("{var=123}", request.getParametersMap().toString());
     }
 
     @Test
@@ -70,6 +70,5 @@ public class RequestTest {
         assertEquals("test=12345;test1=67890", request.getHeader("Cookie"));
         assertEquals("12345", request.getCookie("test"));
         assertEquals("67890", request.getCookie("test1"));
-
     }
 }
