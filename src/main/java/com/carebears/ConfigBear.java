@@ -1,6 +1,6 @@
 package com.carebears;
 
-public class CareBearConfig {
+public class ConfigBear {
 
     private String documentRoot = "/";
     private int port = 5000;
