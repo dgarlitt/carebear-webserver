@@ -3,14 +3,20 @@ import com.carebears.Response;
 import com.carebears.servlets.RootServlet;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 
 import static org.junit.Assert.assertEquals;
 
 public class RootServletTest {
+
+    private StringReader sr;
+    private BufferedReader getReader(String input) {
+        sr = null;
+        sr = new StringReader(input);
+        return new BufferedReader(sr);
+
+    }
+
     @Test
     public void itReturnsDirectoryListing() throws Exception {
         File file = new File("/tmp/drtest/testdir");
@@ -40,7 +46,7 @@ public class RootServletTest {
             testFile2.mkdir();
         }
 
-        Request request = new Request("GET / HTTP/1.1", "/tmp/drtest");
+        Request request = new Request(getReader("GET / HTTP/1.1"), "/tmp/drtest");
 
         StringWriter sw = new StringWriter();
         pw = new PrintWriter(sw);
