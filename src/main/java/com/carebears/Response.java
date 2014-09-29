@@ -10,7 +10,17 @@ public class Response {
 
     private PrintWriter writer;
     private int statusCode;
-    private HashMap<String, String> headers = new HashMap<String, String>();
+    private HashMap<String, String> headers = new HashMap<>();
+
+    public String getCookie(String cookieName) {
+        return cookies.get(cookieName);
+    }
+
+    public void setCookie(String cookieName, String cookieValue) {
+        cookies.put(cookieName, cookieValue);
+    }
+
+    private HashMap<String, String> cookies = new HashMap<>();
     private String body = "";
 
     public Response(PrintWriter writer) {
@@ -56,8 +66,16 @@ public class Response {
     }
 
     public void send() {
-        Set headerSet = headers.entrySet();
-        Iterator h = headerSet.iterator();
+        if (!cookies.isEmpty()) {
+            Set cookieSet = cookies.entrySet();
+            Iterator c = cookieSet.iterator();
+            StringBuilder sb = new StringBuilder();
+
+            while (c.hasNext()) {
+                Map.Entry entry = (Map.Entry) c.next();
+                setHeader("Set-Cookie", entry.getKey() + "=" + entry.getValue() + ";");
+            }
+        }
 
         writer.print("HTTP/1.1 " + getStatusCode());
         if (statusCode == 200) {
@@ -66,6 +84,9 @@ public class Response {
         writer.print("\n");
 
         if (statusCode < 400) {
+            Set headerSet = headers.entrySet();
+            Iterator h = headerSet.iterator();
+
             while (h.hasNext()) {
                 Map.Entry entry = (Map.Entry) h.next();
                 writer.println(entry.getKey() + ": " + entry.getValue());

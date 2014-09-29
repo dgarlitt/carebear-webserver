@@ -84,4 +84,18 @@ public class ResponseTest {
         assertEquals(expected, swriter.getBuffer().toString());
     }
 
+    @Test
+    public void ItSetsCookies() throws Exception {
+        response.setStatusCode(200);
+        response.setCookie("bob", "dole");
+        String expected =   "HTTP/1.1 " + response.getStatusCode() + " OK\n" +
+                "Server: " + response.getHeader("Server") + "\n" +
+                "Set-Cookie: bob=dole;\n" +
+                "Accept-Language: " + response.getHeader("Accept-Language") + "\n" +
+                "Content-Type: " + response.getHeader("Content-Type") + "\n";
+        response.send();
+
+        assertEquals(expected, swriter.getBuffer().toString());
+    }
+
 }
