@@ -17,23 +17,21 @@ public class ParametersServlet extends CareBearServlet {
 
     @Override
     public void doGet(Request req, Response res) {
-
         Map<String, String> paramMap;
+        String body = "";
+
         try {
             paramMap = req.getParameters();
         } catch(Exception e) {
             paramMap = new HashMap<>();
         }
-        PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.1 200");
+        res.setStatusCode(200);
 
-        writer.println("\n");
         for (Map.Entry<String, String>param: paramMap.entrySet()) {
-            writer.println(param.getKey() + " = " + param.getValue());
-
+            body += param.getKey() + " = " + param.getValue() + "\n";
         }
-
-        writer.flush();
+        res.setBody(body);
+        res.send();
     }
 
     @Override
