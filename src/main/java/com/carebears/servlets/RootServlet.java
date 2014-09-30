@@ -4,6 +4,8 @@ import com.carebears.CareBearServlet;
 import com.carebears.Request;
 import com.carebears.Response;
 
+import java.io.IOException;
+
 public class RootServlet extends CareBearServlet {
     private String path;
 

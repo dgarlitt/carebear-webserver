@@ -3,6 +3,7 @@ import com.carebears.Request;
 import com.carebears.Response;
 import org.junit.Before;
 import org.junit.Test;
+import testoutput.fakes.FakeInputStream;
 
 import java.io.*;
 
@@ -10,14 +11,6 @@ import static org.junit.Assert.assertEquals;
 
 public class DocumentRetrieverTest {
     public DocumentRetriever docRetriever;
-
-    private StringReader sr;
-    private BufferedReader getReader(String input) {
-        sr = null;
-        sr = new StringReader(input);
-        return new BufferedReader(sr);
-
-    }
 
     @Before
     public void setup() {
@@ -29,9 +22,9 @@ public class DocumentRetrieverTest {
         boolean docFound = true;
 
         try {
-            Request request = new Request(getReader("GET /IDontExist HTTP/1.1"), "/foo");
+            Request request = new Request(new FakeInputStream("GET /IDontExist HTTP/1.1"), "/foo");
 
-            docRetriever.getDocument(request, new Response(new PrintWriter(new StringWriter())));
+            docRetriever.getDocument(request, new Response(new ByteArrayOutputStream()));
         }
         catch(FileNotFoundException ex) {
             docFound = false;
@@ -47,10 +40,9 @@ public class DocumentRetrieverTest {
         pw.println("test");
         pw.close();
 
-        Request request = new Request(getReader("GET /docret.txt HTTP/1.1"), "/tmp");
-        StringWriter sw = new StringWriter();
-        pw = new PrintWriter(sw);
-        Response response = new Response(pw);
+        Request request = new Request(new FakeInputStream("GET /docret.txt HTTP/1.1"), "/tmp");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Response response = new Response(outputStream);
 
         docRetriever.getDocument(request, response);
         StringBuffer wantContent = new StringBuffer("HTTP/1.1 200 OK\n");
@@ -61,6 +53,6 @@ public class DocumentRetrieverTest {
 
         file.delete();
 
-        //assertEquals(wantContent.toString(), sw.toString());
+        assertEquals(wantContent.toString(), outputStream.toString());
     }
 }

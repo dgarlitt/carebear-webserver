@@ -3,7 +3,10 @@ package testoutput.fakes;
 import com.carebears.CareBearServlet;
 import com.carebears.Request;
 import com.carebears.Response;
+import com.carebears.ResponseOutputWriter;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 public class FakeServlet extends CareBearServlet{
@@ -19,12 +22,13 @@ public class FakeServlet extends CareBearServlet{
 
     @Override
     public void doGet(Request req, Response res) {
-        PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.1 200");
-        writer.flush();
+        ResponseOutputWriter writer = res.getResponseOutputWriter();
+        try {
+            writer.writeln("HTTP/1.1 200");
+            writer.flush();
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
     }
-
-
-
-
 }

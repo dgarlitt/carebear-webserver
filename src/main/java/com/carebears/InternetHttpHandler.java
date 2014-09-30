@@ -1,24 +1,21 @@
 package com.carebears;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 public class InternetHttpHandler extends CareBearHttpHandler {
     private String documentRoot;
     private ArrayList<CareBearServlet> servlets = new ArrayList<CareBearServlet>();
 
-    public void handle(BufferedReader request, PrintWriter writer) {
-        Request reqObj = new Request(request);
-        Response resObj = new Response(writer);
+    public void handle(InputStream inputStream,  OutputStream outputStream) {
+        Request reqObj = new Request(inputStream);
+        Response resObj = new Response(outputStream);
 
         reqObj.setDocRoot(Server.CONFIG.getDocumentRoot());
 
         CareBearServlet servlet = getServletByPath(reqObj.getPath());
         if (servlet != null) {
-            switch(reqObj.getMethod()) {
+            switch (reqObj.getMethod()) {
                 case "GET":
                     servlet.doGet(reqObj, resObj);
                     break;

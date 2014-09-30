@@ -3,6 +3,7 @@ import com.carebears.DirectoryReader;
 import com.carebears.Request;
 import org.junit.Before;
 import org.junit.Test;
+import testoutput.fakes.FakeInputStream;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,14 +12,6 @@ import static org.junit.Assert.assertEquals;
 
 public class DirectoryReaderTest {
     private File file;
-
-    private StringReader sr;
-    private BufferedReader getReader(String input) {
-        sr = null;
-        sr = new StringReader(input);
-        return new BufferedReader(sr);
-
-    }
 
     @Before
     public void setup() {
@@ -41,7 +34,7 @@ public class DirectoryReaderTest {
 
     @Test
     public void emptyDirectoryTest() throws Exception {
-        Request request = new Request(getReader("GET /drtest HTTP/1.1"), "/tmp");
+        Request request = new Request(new FakeInputStream("GET /drtest HTTP/1.1"), "/tmp");
         DirectoryReader directoryReader = new DirectoryReader(request);
         ArrayList<DirectoryObject> dirList = directoryReader.getDirectoryListing();
 
@@ -57,7 +50,7 @@ public class DirectoryReaderTest {
         pw.println("test");
         pw.close();
 
-        Request request = new Request(getReader("GET /drtest HTTP/1.1"), "/tmp");
+        Request request = new Request(new FakeInputStream("GET /drtest HTTP/1.1"), "/tmp");
         DirectoryReader directoryReader = new DirectoryReader(request);
         ArrayList<DirectoryObject> dirList = directoryReader.getDirectoryListing();
 
@@ -86,7 +79,7 @@ public class DirectoryReaderTest {
             testFile2.mkdir();
         }
 
-        Request request = new Request(getReader("GET /drtest HTTP/1.1"), "/tmp");
+        Request request = new Request(new FakeInputStream("GET /drtest HTTP/1.1"), "/tmp");
         DirectoryReader directoryReader = new DirectoryReader(request);
 
         String content = directoryReader.getFormattedListing();

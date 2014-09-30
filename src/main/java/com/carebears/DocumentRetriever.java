@@ -21,8 +21,11 @@ public class DocumentRetriever {
                 sb.append((char)charRead);
                 charRead = br.read();
             }
-
             br.close();
+
+            resp.setStatusCode(200);
+            resp.setBody(sb.toString());
+            resp.send();
         }
         catch(IOException ex) {
             ex.printStackTrace();

@@ -2,6 +2,7 @@ import com.carebears.Request;
 import com.carebears.Response;
 import com.carebears.servlets.RootServlet;
 import org.junit.Test;
+import testoutput.fakes.FakeInputStream;
 
 import java.io.*;
 
@@ -46,16 +47,14 @@ public class RootServletTest {
             testFile2.mkdir();
         }
 
-        Request request = new Request(getReader("GET / HTTP/1.1"), "/tmp/drtest");
-
-        StringWriter sw = new StringWriter();
-        pw = new PrintWriter(sw);
-        Response response = new Response(pw);
+        Request request = new Request(new FakeInputStream("GET / HTTP/1.1"), "/tmp/drtest");
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        Response response = new Response(byteOutputStream);
 
         RootServlet rootServlet = new RootServlet();
         rootServlet.doGet(request, response);
 
-        String output = sw.toString();
+        String output = byteOutputStream.toString();
 
         StringBuffer wantContent = new StringBuffer("HTTP/1.1 200 OK\n");
         wantContent.append("Server: CareBearServer/0.0.1\n");

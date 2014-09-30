@@ -1,5 +1,7 @@
 package com.carebears;
 
+import java.io.IOException;
+
 public abstract class CareBearServlet {
 
     public abstract String getPath();

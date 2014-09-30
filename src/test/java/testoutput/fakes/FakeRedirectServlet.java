@@ -3,7 +3,10 @@ package testoutput.fakes;
 import com.carebears.CareBearServlet;
 import com.carebears.Request;
 import com.carebears.Response;
+import com.carebears.ResponseOutputWriter;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 public class FakeRedirectServlet extends CareBearServlet{
@@ -19,13 +22,17 @@ public class FakeRedirectServlet extends CareBearServlet{
 
     @Override
     public void doGet(Request req, Response res) {
-        PrintWriter writer = res.getWriter();
-        writer.println("HTTP/1.1 302");
-        writer.println("Location: redirect here");
-        writer.flush();
+        ResponseOutputWriter writer = res.getResponseOutputWriter();
+        StringBuffer sb = new StringBuffer();
+        sb.append("HTTP/1.1 302\n");
+        sb.append("Location: redirect here\n");
+
+        try {
+            writer.write(sb.toString());
+            writer.flush();
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
     }
-
-
-
-
 }

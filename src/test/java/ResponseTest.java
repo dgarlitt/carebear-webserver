@@ -3,31 +3,23 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class ResponseTest {
-
-    private StringWriter swriter;
-    private PrintWriter writer;
     private Response response;
+    private ByteArrayOutputStream outputStream;
 
     @Before
     public void setup() {
-        swriter = new StringWriter();
-        writer = new PrintWriter(swriter);
-        response = new Response(writer);
-    }
-
-    @Test
-    public void ItGetsAWriter() throws Exception {
-        assertEquals(writer, response.getWriter());
+        outputStream = new ByteArrayOutputStream();
+        response = new Response(outputStream);
     }
 
     @Test
     public void ItAcceptsAStatusCode() throws Exception {
         response.setStatusCode(200);
-
         assertEquals(200, response.getStatusCode());
     }
 
@@ -44,11 +36,11 @@ public class ResponseTest {
     @Test
     public void ItCanSetAndGetTheBody() throws Exception {
         String bodyMsg = "This is the body of the document\nIt has two lines. Yay!";
-
-        assertEquals("", response.getBody());
+        byte[] bytes = response.getBody();
+        assertEquals(null, bytes);
 
         response.setBody(bodyMsg);
-        assertEquals(bodyMsg, response.getBody());
+        assertEquals(bodyMsg, new String(response.getBody()));
     }
 
     @Test
@@ -62,7 +54,7 @@ public class ResponseTest {
         String expected = "HTTP/1.1 404\n";
         response.send();
 
-        assertEquals(expected, swriter.getBuffer().toString());
+        assertEquals(expected, outputStream.toString());
     }
 
     @Test
@@ -81,7 +73,7 @@ public class ResponseTest {
                             "Content-Type: " + response.getHeader("Content-Type") + "\n";
         response.send();
 
-        assertEquals(expected, swriter.getBuffer().toString());
+        assertEquals(expected, outputStream.toString());
     }
 
 }

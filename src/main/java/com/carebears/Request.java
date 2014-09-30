@@ -1,9 +1,7 @@
 package com.carebears;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.util.HashMap;
 
@@ -16,15 +14,15 @@ public class Request {
     private String docRoot;
     private String firstLine;
 
-    public Request(BufferedReader rawRequest) {
+    public Request(InputStream inputStream) {
         headerMap = new HashMap<>();
 
-        parseRequest(rawRequest);
+        parseRequest(inputStream);
         parseRequestLine(firstLine);
     }
 
-    public Request(BufferedReader rawRequest, String documentRoot) {
-        this(rawRequest);
+    public Request(InputStream inputStream, String documentRoot) {
+        this(inputStream);
         docRoot = documentRoot;
     }
 
@@ -32,6 +30,9 @@ public class Request {
         return headerMap.get(header);
     }
 
+    public String getFirstRequestLine() {
+        return firstLine;
+    }
 
     public String getMethod() {
         return method;
@@ -71,7 +72,8 @@ public class Request {
         this.version = rParams[2];
     }
 
-    public void parseRequest(BufferedReader reader) {
+    public void parseRequest(InputStream inputStream) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder output = new StringBuilder();
         String headerString = null;
         try {
