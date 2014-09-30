@@ -3,6 +3,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class MimeTypesObjectTest {
     private MimeTypesStore mimeTypesStore;
@@ -10,12 +12,12 @@ public class MimeTypesObjectTest {
     @Before
     public void setup() {
         mimeTypesStore = MimeTypesStore.getInstance();
-        mimeTypesStore.addMimeType("image/jpg jpg JPEG JPG jpeg");
-        mimeTypesStore.addMimeType("text/html htm html");
-        mimeTypesStore.addMimeType("text/plain txt TXT");
-        mimeTypesStore.addMimeType("text/javascript js");
-        mimeTypesStore.addMimeType("image/png png");
-        mimeTypesStore.addMimeType("image/gif gif");
+        mimeTypesStore.addMimeType("image/jpg jpg JPEG JPG jpeg", true);
+        mimeTypesStore.addMimeType("text/html htm html", false);
+        mimeTypesStore.addMimeType("text/plain txt TXT", false);
+        mimeTypesStore.addMimeType("text/javascript js", false);
+        mimeTypesStore.addMimeType("image/png png", true);
+        mimeTypesStore.addMimeType("image/gif gif", true);
 
     }
 
@@ -35,5 +37,12 @@ public class MimeTypesObjectTest {
     public void itGetsProperContentTypeForPNG() throws Exception {
         String contentType = mimeTypesStore.getContentType("test.png");
         assertEquals("image/png", contentType);
+    }
+
+    @Test
+    public void binaryTypeTest() throws Exception {
+        assertTrue(mimeTypesStore.isBinaryType("image/jpg"));
+        assertFalse(mimeTypesStore.isBinaryType("text/html"));
+        assertTrue(mimeTypesStore.isBinaryType("application/octet-stream"));
     }
 }

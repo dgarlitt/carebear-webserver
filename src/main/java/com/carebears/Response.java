@@ -1,10 +1,7 @@
 package com.carebears;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Response {
     private ResponseOutputWriter responseOutputWriter;
@@ -81,6 +78,15 @@ public class Response {
         System.arraycopy(bytes, 0, this.body, 0, bytes.length);
     }
 
+    public int getBodySize() {
+        int retVal = 0;
+
+        if (body != null && body.length > 0) {
+            retVal = body.length;
+        }
+        return(retVal);
+    }
+
     public void send() {
         if (!cookies.isEmpty()) {
             Set cookieSet = cookies.entrySet();
@@ -102,12 +108,11 @@ public class Response {
 
             if (statusCode < 400) {
                 outputBuffer = new StringBuffer();
-                Set headerSet = headers.entrySet();
-                Iterator h = headerSet.iterator();
 
-                while (h.hasNext()) {
-                    Map.Entry entry = (Map.Entry) h.next();
-                    outputBuffer.append(entry.getKey() + ": " + entry.getValue() + "\n");
+                SortedSet<String> keys = new TreeSet<String>(headers.keySet());
+                for (String key : keys) {
+                    String value = headers.get(key);
+                    outputBuffer.append(key + ": " + value + "\n");
                 }
 
                 if (outputBuffer.length() > 0) {

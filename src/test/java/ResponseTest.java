@@ -68,9 +68,9 @@ public class ResponseTest {
     public void ItWritesTheExpectedResponse() throws Exception {
         response.setStatusCode(200);
         String expected =   "HTTP/1.1 " + response.getStatusCode() + " OK\n" +
-                            "Server: " + response.getHeader("Server") + "\n" +
-                            "Accept-Language: " + response.getHeader("Accept-Language") + "\n" +
-                            "Content-Type: " + response.getHeader("Content-Type") + "\n";
+                "Accept-Language: " + response.getHeader("Accept-Language") + "\n" +
+                "Content-Type: " + response.getHeader("Content-Type") + "\n" +
+                "Server: " + response.getHeader("Server") + "\n";
         response.send();
 
         assertEquals(expected, outputStream.toString());
@@ -81,13 +81,20 @@ public class ResponseTest {
         response.setStatusCode(200);
         response.setCookie("bob", "dole");
         String expected =   "HTTP/1.1 " + response.getStatusCode() + " OK\n" +
-                "Server: " + response.getHeader("Server") + "\n" +
-                "Set-Cookie: bob=dole;\n" +
                 "Accept-Language: " + response.getHeader("Accept-Language") + "\n" +
-                "Content-Type: " + response.getHeader("Content-Type") + "\n";
+                "Content-Type: " + response.getHeader("Content-Type") + "\n" +
+                "Server: " + response.getHeader("Server") + "\n" +
+                "Set-Cookie: bob=dole;\n";
         response.send();
 
         assertEquals(expected, outputStream.toString());
+    }
+
+    @Test
+    public void ItReturnsTheProperBodySize() throws Exception {
+        String testOutput = "This is a string";
+        response.setBody(testOutput);
+        assertEquals(testOutput.length(), response.getBodySize());
     }
 
 }
