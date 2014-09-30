@@ -3,7 +3,9 @@ package com.carebears;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Request {
     private String method;
@@ -18,9 +20,10 @@ public class Request {
     public Request(InputStream inputStream) {
         headerMap = new HashMap<>();
         cookieMap = new HashMap<>();
+        parametersMap = new HashMap<>();
+
 
         parseRequest(inputStream);
-        parseRequestLine(firstLine);
     }
 
     public Request(InputStream inputStream, String documentRoot) {
@@ -75,43 +78,62 @@ public class Request {
     }
 
     public void parseRequest(InputStream inputStream) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder sb = new StringBuilder();
+        String formattedInput;
+        String[] stringArray;
+        BufferedInputStream reader = new BufferedInputStream(inputStream);
 
         try {
-            firstLine = reader.readLine();
-            parseRequestLine(firstLine);
+            formattedInput = parseBytesStream(reader);
+            stringArray = formattedInput.split("\n");
 
-            String line = reader.readLine();
-
-            while(line != null && !line.isEmpty()) {
-                sb.append(line + "\n");
-                line = reader.readLine();
+            for (int i = 0; i < stringArray.length; i++) {
+                if (i == 0) {
+                    parseRequestLine(stringArray[0]);
+                } else {
+                    parseHeader(stringArray[i]);
+                }
             }
+        }
+        catch (Exception e) {
 
-            String rawRequest = sb.toString();
-            String[] rawRequestArray = rawRequest.split("\n\n");
-
-            parseHeader(rawRequestArray[0]);
-
-            if (rawRequestArray.length > 1) {
-                parseBody(rawRequestArray[1]);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
 
+    private String parseBytesStream(BufferedInputStream is) throws IOException {
+        List<Byte> byteL = new ArrayList<>();
+        byte[] byteArray;
+        boolean newLine = false;
+
+        int b;
+        while ((b = is.read()) != -1) {
+            if (b != 13) {
+                if (b == 10) {
+                    if (newLine) {
+                        break;
+                    }
+                    newLine = true;
+                } else {
+                    newLine = false;
+                }
+                byteL.add((byte) b);
+            }
+        }
+
+        byteArray = new byte[byteL.size()];
+
+        for (int i = 0; i < byteL.size(); i++) {
+            byteArray[i] = byteL.get(i);
+        }
+
+        return (new String(byteArray, "UTF-8"));
+    }
+
     private void parseHeader(String header) {
         if (!header.isEmpty()) {
-            String[] parsedHeader = header.split("\n");
-            for (int i = 0; i < parsedHeader.length; i++) {
-                String[] parsedValues = parsedHeader[i].split(":");
-                if (parsedValues.length > 1) {
-                    headerMap.put(parsedValues[0], parsedValues[1]);
-                }
+            String[] parsedValues = header.split(":");
+            if (parsedValues.length > 1) {
+                headerMap.put(parsedValues[0], parsedValues[1]);
             }
         }
     }
@@ -132,7 +154,6 @@ public class Request {
     }
 
     private void parseParameters(String params) throws UnsupportedEncodingException {
-        parametersMap = new HashMap<>();
         String[] paramArray = params.split("&");
 
         for(String pair: paramArray) {

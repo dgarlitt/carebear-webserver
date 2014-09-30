@@ -18,7 +18,7 @@ public class FakeHttpHandler extends CareBearHttpHandler {
         ResponseOutputWriter writer = response.getResponseOutputWriter();
 
         try {
-            writer.write(request.getFirstRequestLine());
+            writer.write(request.getMethod() + " " + request.getPath() + " " + request.getVersion() );
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
