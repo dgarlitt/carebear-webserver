@@ -30,10 +30,6 @@ public class FormServlet extends CareBearServlet {
 
     @Override
     public void doPost(Request req, Response res) {
-
-        String data = req.getParam("data");
-
-
         res.setStatusCode(200);
 
         res.send();
