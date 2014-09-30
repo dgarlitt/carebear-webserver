@@ -63,7 +63,7 @@ public class ServletTest {
     public void ItGetsMapOfRequestParameters() throws Exception {
         FakeParameterServlet parameterServlet = new FakeParameterServlet();
         Request request = new Request(new FakeInputStream("GET /parameter?test=123 HTTP/1.1"));
-        HashMap<String, String> paramMap = request.getParameters();
+        HashMap<String, String> paramMap = request.getParametersMap();
         assertEquals("123", paramMap.get("test"));
     }
 
@@ -81,5 +81,6 @@ public class ServletTest {
         fakeServlet.doOptions(request, response);
         assertEquals("GET,HEAD,POST,OPTIONS,PUT", response.getHeader("Allow"));
     }
+
 
 }

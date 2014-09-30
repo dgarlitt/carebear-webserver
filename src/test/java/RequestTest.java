@@ -15,8 +15,23 @@ public class RequestTest {
 
     @Test
     public void ParsesHeaderCorrectly() throws Exception {
-        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nhost:localhost"));
-        assertEquals("localhost", request.getHeader("host"));
+        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nHost:localhost"));
+        assertEquals("localhost", request.getHeader("Host"));
+    }
+
+    @Test
+    public void ParsesTwoHeadersCorrectly() throws Exception {
+        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nthisiswrong\nHost:localhost"));
+        assertEquals(null, request.getHeader("thisiswrong"));
+        assertEquals("localhost", request.getHeader("Host"));
+    }
+
+    @Test
+    public void ParsesMultipleHeadersCorrectly() throws Exception {
+        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nHost:localhost\nAccept:text/html\nUser-agent:mozilla/5.0"));
+        assertEquals("localhost", request.getHeader("Host"));
+        assertEquals("text/html", request.getHeader("Accept"));
+        assertEquals("mozilla/5.0", request.getHeader("User-agent"));
     }
 
     @Test
@@ -31,7 +46,7 @@ public class RequestTest {
         assertEquals("GET", request.getMethod());
         assertEquals("/fake", request.getPath());
         assertEquals("HTTP/1.1", request.getVersion());
-        assertEquals("{var=123}", request.getParameters().toString());
+        assertEquals("{var=123}", request.getParametersMap().toString());
     }
 
     @Test
@@ -40,4 +55,11 @@ public class RequestTest {
         assertEquals("123", request.getParam("var"));
     }
 
+    @Test
+    public void ParsesAndRetrievesCookies() throws Exception {
+        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nCookie:test=12345;test1=67890"));
+        assertEquals("test=12345;test1=67890", request.getHeader("Cookie"));
+        assertEquals("12345", request.getCookie("test"));
+        assertEquals("67890", request.getCookie("test1"));
+    }
 }
