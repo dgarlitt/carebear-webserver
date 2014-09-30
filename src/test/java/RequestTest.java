@@ -1,16 +1,27 @@
 import com.carebears.Request;
 import org.junit.Test;
 import testoutput.fakes.FakeInputStream;
+
+import java.io.BufferedInputStream;
+
 import static org.junit.Assert.assertEquals;
 
 public class RequestTest {
-
     @Test
     public void ParsesRawRequestCorrectly() throws Exception {
         Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1"));
         assertEquals("GET", request.getMethod());
         assertEquals("/fake", request.getPath());
         assertEquals("HTTP/1.1", request.getVersion());
+    }
+
+    @Test
+    public void ParsesRawRequestToHeaderOnly() throws Exception {
+        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nHost:localhost\nAccept:text/html\nUser-agent:mozilla/5.0\n\nData:stuff"));
+        assertEquals("localhost", request.getHeader("Host"));
+        assertEquals("text/html", request.getHeader("Accept"));
+        assertEquals("mozilla/5.0", request.getHeader("User-agent"));
+        assertEquals(null, request.getHeader("Data"));
     }
 
     @Test
