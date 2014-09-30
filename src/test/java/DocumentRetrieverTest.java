@@ -46,9 +46,10 @@ public class DocumentRetrieverTest {
 
         docRetriever.getDocument(request, response);
         StringBuffer wantContent = new StringBuffer("HTTP/1.1 200 OK\n");
-        wantContent.append("Server: CareBearServer/0.0.1\n");
         wantContent.append("Accept-Language: en-US\n");
-        wantContent.append("Content-Type: text/html; charset=utf-8\n\n");
+        wantContent.append("Content-Type: text/html; charset=utf-8\n");
+        wantContent.append("Content-length: 5\n");
+        wantContent.append("Server: CareBearServer/0.0.1\n\n");
         wantContent.append("test" + System.lineSeparator());
 
         file.delete();

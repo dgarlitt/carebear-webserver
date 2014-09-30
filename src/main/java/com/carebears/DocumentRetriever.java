@@ -25,6 +25,7 @@ public class DocumentRetriever {
 
             resp.setStatusCode(200);
             resp.setBody(sb.toString());
+            resp.setHeader("Content-length", "" + resp.getBodySize());
             resp.send();
         }
         catch(IOException ex) {

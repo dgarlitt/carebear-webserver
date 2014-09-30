@@ -57,9 +57,9 @@ public class RootServletTest {
         String output = byteOutputStream.toString();
 
         StringBuffer wantContent = new StringBuffer("HTTP/1.1 200 OK\n");
-        wantContent.append("Server: CareBearServer/0.0.1\n");
         wantContent.append("Accept-Language: en-US\n");
-        wantContent.append("Content-Type: text/html; charset=utf-8\n\n");
+        wantContent.append("Content-Type: text/html; charset=utf-8\n");
+        wantContent.append("Server: CareBearServer/0.0.1\n\n");
         wantContent.append("<html>\n<head>\n");
         wantContent.append("<title>Directory of /</title>\n");
         wantContent.append("</head>\n<body>\n");
