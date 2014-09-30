@@ -1,4 +1,5 @@
 import com.carebears.DocumentRetriever;
+import com.carebears.MimeTypesStore;
 import com.carebears.Request;
 import com.carebears.Response;
 import org.junit.Before;
@@ -44,11 +45,14 @@ public class DocumentRetrieverTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Response response = new Response(outputStream);
 
+        String mimeType = MimeTypesStore.getInstance().getContentType("docret.txt");
+
         docRetriever.getDocument(request, response);
         StringBuffer wantContent = new StringBuffer("HTTP/1.1 200 OK\n");
         wantContent.append("Accept-Language: en-US\n");
-        wantContent.append("Content-Type: text/html; charset=utf-8\n");
-        wantContent.append("Content-length: 5\n");
+        wantContent.append("Content-Length: 5\n");
+        wantContent.append("Content-Type: ");
+        wantContent.append(mimeType + "\n");
         wantContent.append("Server: CareBearServer/0.0.1\n\n");
         wantContent.append("test" + System.lineSeparator());
 

@@ -34,7 +34,8 @@ public class DocumentRetriever {
                 buf = byteOutputStream.toByteArray();
                 bufferedInputStream.close();
                 resp.setStatusCode(200);
-                resp.setHeader("Content-length", "" + buf.length);
+                resp.setHeader("Content-Type", mimeType);
+                resp.setHeader("Content-Length", "" + buf.length);
                 resp.setBody(buf);
             }
             catch(IOException ex) {
@@ -55,7 +56,8 @@ public class DocumentRetriever {
 
                 resp.setStatusCode(200);
                 resp.setBody(sb.toString());
-                resp.setHeader("Content-length", "" + resp.getBodySize());
+                resp.setHeader("Content-Type", mimeType);
+                resp.setHeader("Content-Length", "" + resp.getBodySize());
             } catch (IOException ex) {
                 resp.setStatusCode(500);
             }
