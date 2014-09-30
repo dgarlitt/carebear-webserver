@@ -1,6 +1,8 @@
 package com.carebears;
 
 import java.io.*;
+import java.nio.*;
+import java.util.ArrayList;
 
 public class DocumentRetriever {
 
@@ -12,25 +14,53 @@ public class DocumentRetriever {
             throw new FileNotFoundException(file.toString() + " does not exist");
         }
 
-        StringBuffer sb = new StringBuffer();
+        String filename = file.getName();
+        String mimeType = MimeTypesStore.getInstance().getContentType(filename);
+        boolean isBinary = MimeTypesStore.getInstance().isBinaryType(mimeType);
 
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            int charRead = br.read();
-            while(charRead != -1) {
-                sb.append((char)charRead);
-                charRead = br.read();
+        if (isBinary) {
+            byte[] buf = new byte[4096];
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            try {
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
+                int bytesRead = bufferedInputStream.read(buf, 0, 4096);
+
+                while (bytesRead != -1) {
+                    byteOutputStream.write(buf, 0, bytesRead);
+                    bytesRead = bufferedInputStream.read(buf, 0, 4096);
+                }
+                byteOutputStream.flush();
+
+                buf = byteOutputStream.toByteArray();
+                bufferedInputStream.close();
+                resp.setStatusCode(200);
+                resp.setHeader("Content-length", "" + buf.length);
+                resp.setBody(buf);
             }
-            br.close();
+            catch(IOException ex) {
+                resp.setStatusCode(500);
+            }
+        }
+        else {
+            StringBuffer sb = new StringBuffer();
 
-            resp.setStatusCode(200);
-            resp.setBody(sb.toString());
-            resp.setHeader("Content-length", "" + resp.getBodySize());
-            resp.send();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                int charRead = br.read();
+                while (charRead != -1) {
+                    sb.append((char) charRead);
+                    charRead = br.read();
+                }
+                br.close();
+
+                resp.setStatusCode(200);
+                resp.setBody(sb.toString());
+                resp.setHeader("Content-length", "" + resp.getBodySize());
+            } catch (IOException ex) {
+                resp.setStatusCode(500);
+            }
         }
-        catch(IOException ex) {
-            ex.printStackTrace();
-        }
+        resp.send();
 
         return;
     }
