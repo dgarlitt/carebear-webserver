@@ -60,4 +60,37 @@ public class DocumentRetrieverTest {
 
         assertEquals(wantContent.toString(), outputStream.toString());
     }
+
+    @Test
+    public void PartialDocumentIsReturned() throws Exception {
+        File file = new File("/tmp/docret.txt");
+        PrintWriter pw = new PrintWriter(new FileOutputStream(file));
+        pw.println("this is testing 1, 2, 3");
+        pw.close();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("GET /docret.txt HTTP/1.1\n");
+        sb.append("Range: bytes=0-6\n\n");
+
+        Request request = new Request(new FakeInputStream(sb.toString()), "/tmp");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Response response = new Response(outputStream);
+
+        String mimeType = MimeTypesStore.getInstance().getContentType("docret.txt");
+
+        docRetriever.getDocument(request, response);
+        StringBuilder wantContent = new StringBuilder("HTTP/1.1 206\n");
+        wantContent.append("Accept-Language: en-US\n");
+        wantContent.append("Content-Length: 7\n");
+        wantContent.append("Content-Range: bytes 0-6\n");
+        wantContent.append("Content-Type: ");
+        wantContent.append(mimeType + "\n");
+        wantContent.append("Server: CareBearServer/0.0.1\n\n");
+        wantContent.append("this is");
+
+        file.delete();
+
+        assertEquals(wantContent.toString(), outputStream.toString());
+
+    }
 }
