@@ -56,7 +56,6 @@ public class Response {
     }
 
     public void setBody(String body) {
-        System.out.println(body);
         try {
             this.body = body.getBytes("UTF-8");
         }

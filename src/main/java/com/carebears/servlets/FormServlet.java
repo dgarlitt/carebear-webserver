@@ -19,7 +19,6 @@ public class FormServlet extends CareBearServlet {
     @Override
     public void doGet(Request req, Response res) {
         res.setStatusCode(200);
-        System.out.println("What the?!");
 
         if (session.getData() != null) {
             res.setBody("data = " + session.getData());
@@ -31,7 +30,6 @@ public class FormServlet extends CareBearServlet {
     @Override
     public void doPost(Request req, Response res) {
         res.setStatusCode(200);
-        System.out.println(req.getParam("data"));
         session.setData(req.getParam("data"));
         res.send();
     }

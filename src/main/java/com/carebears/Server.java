@@ -54,6 +54,7 @@ public class Server {
         handler.registerServlet(new RedirectServlet());
         handler.registerServlet(new ParametersServlet());
         handler.registerServlet(new MethodOptionsServlet());
+        handler.registerServlet(new LogsServlet());
 
         CONFIG.getServerSocket().start();
     }
