@@ -31,8 +31,22 @@ public class Request {
         docRoot = documentRoot;
     }
 
+    public boolean hasHeader(String header) {
+        return headerMap.containsKey(header);
+    }
+
     public String getHeader(String header) {
         return headerMap.get(header);
+    }
+
+    public void setHeader(String key, String value) {
+        key = key.trim();
+        value = value.trim();
+        if (headerMap.containsKey(key)) {
+            headerMap.replace(key, value);
+        } else {
+            headerMap.put(key, value);
+        }
     }
 
     public String getFirstRequestLine() {
@@ -62,6 +76,16 @@ public class Request {
         return "";
     }
 
+    public void setParam(String key, String value) {
+        key = key.trim();
+        value = value.trim();
+        if (parametersMap.containsKey(key)) {
+            parametersMap.replace(key, value);
+        } else {
+            parametersMap.put(key, value);
+        }
+    }
+
     public void parseRequestLine(String line) {
         String[] rParams = line.split(" ");
         String[] rUrlParameters = rParams[1].split("\\?");
@@ -83,7 +107,7 @@ public class Request {
         BufferedInputStream reader = new BufferedInputStream(inputStream);
 
         try {
-            formattedInput = parseBytesStream(reader);
+            formattedInput = getHeaderAsString(reader);
             stringArray = formattedInput.split("\n");
 
             for (int i = 0; i < stringArray.length; i++) {
@@ -93,14 +117,16 @@ public class Request {
                     parseHeader(stringArray[i]);
                 }
             }
+
+            parseBody(reader);
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
 
     }
 
-    private String parseBytesStream(BufferedInputStream is) throws IOException {
+    private String getHeaderAsString(BufferedInputStream is) throws IOException {
         List<Byte> byteL = new ArrayList<>();
         byte[] byteArray;
         boolean newLine = false;
@@ -133,7 +159,7 @@ public class Request {
         if (!header.isEmpty()) {
             String[] parsedValues = header.split(":");
             if (parsedValues.length > 1) {
-                headerMap.put(parsedValues[0], parsedValues[1]);
+                setHeader(parsedValues[0], parsedValues[1]);
             }
         }
     }
@@ -143,13 +169,18 @@ public class Request {
             String[] parsedBody = body.split("&");
             for (int i = 0; i < parsedBody.length; i++) {
                 String[] parsedValues = parsedBody[i].split("=");
-                if (parametersMap.containsKey(parsedValues[0])) {
-                    parametersMap.replace(parsedValues[0], parsedValues[1]);
-                } else {
-                    parametersMap.put(parsedValues[0], parsedValues[1]);
-                }
-
+                setParam(parsedValues[0], parsedValues[1]);
             }
+        }
+    }
+
+    private void parseBody(BufferedInputStream inputStream) throws IOException {
+        String s_contentLen = getHeader("Content-Length");
+        if (s_contentLen != null) {
+            int contentLength = Integer.parseInt(s_contentLen);
+            byte[] byteArr = new byte[contentLength];
+            inputStream.read(byteArr, 0, contentLength);
+            parseBody(new String(byteArr));
         }
     }
 

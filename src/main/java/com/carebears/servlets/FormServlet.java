@@ -1,14 +1,14 @@
 package com.carebears.servlets;
 
-import com.carebears.CareBearServlet;
-import com.carebears.Request;
-import com.carebears.Response;
+import com.carebears.*;
 
 public class FormServlet extends CareBearServlet {
     private String path;
+    private Session session;
 
     public FormServlet() {
         path = "/form";
+        session = Server.CONFIG.getSession();
     }
 
     @Override
@@ -19,10 +19,10 @@ public class FormServlet extends CareBearServlet {
     @Override
     public void doGet(Request req, Response res) {
         res.setStatusCode(200);
+        System.out.println("What the?!");
 
-        String cookie = req.getCookie("data");
-        if (req.getCookie("data") != null) {
-            res.setBody("data = " + cookie);
+        if (session.getData() != null) {
+            res.setBody("data = " + session.getData());
         }
 
         res.send();
@@ -31,20 +31,22 @@ public class FormServlet extends CareBearServlet {
     @Override
     public void doPost(Request req, Response res) {
         res.setStatusCode(200);
-
-        String data = req.getParam("data");
-
-        if (data != null) {
-            res.setBody("data = " + data);
-            //res.setCookie("data", data);
-        }
-
+        System.out.println(req.getParam("data"));
+        session.setData(req.getParam("data"));
         res.send();
     }
 
     @Override
     public void doPut(Request req, Response res) {
         res.setStatusCode(200);
+        session.setData(req.getParam("data"));
+        res.send();
+    }
+
+    @Override
+    public void doDelete(Request req, Response res) {
+        res.setStatusCode(200);
+        session.setData(null);
         res.send();
     }
 

@@ -6,6 +6,7 @@ public class ConfigBear {
     private int port = 5000;
     private CareBearHttpHandler handler;
     private CareBearServerSocket serverSocket;
+    private Session session;
 
     public String getDocumentRoot() {
         return documentRoot;
@@ -37,6 +38,14 @@ public class ConfigBear {
 
     public CareBearServerSocket getServerSocket() {
         return serverSocket;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 
 }

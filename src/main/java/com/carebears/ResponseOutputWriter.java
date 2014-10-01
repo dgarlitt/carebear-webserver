@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class ResponseOutputWriter {
-    private OutputStream out;
     private BufferedOutputStream bos;
 
     public ResponseOutputWriter(OutputStream out) {
-        this.out = out;
         bos = new BufferedOutputStream(out);
     }
 

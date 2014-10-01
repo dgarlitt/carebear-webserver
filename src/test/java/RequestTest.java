@@ -25,6 +25,12 @@ public class RequestTest {
     }
 
     @Test
+    public void ParsesBodyFromRequest() throws Exception {
+        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nContent-Length:10\n\ndata=stuff"));
+        assertEquals("stuff", request.getParam("data"));
+    }
+
+    @Test
     public void ParsesHeaderCorrectly() throws Exception {
         Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nHost:localhost"));
         assertEquals("localhost", request.getHeader("Host"));

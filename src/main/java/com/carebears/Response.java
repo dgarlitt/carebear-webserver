@@ -56,6 +56,7 @@ public class Response {
     }
 
     public void setBody(String body) {
+        System.out.println(body);
         try {
             this.body = body.getBytes("UTF-8");
         }
@@ -109,7 +110,7 @@ public class Response {
             if (statusCode < 400) {
                 outputBuffer = new StringBuffer();
 
-                SortedSet<String> keys = new TreeSet<String>(headers.keySet());
+                SortedSet<String> keys = new TreeSet<>(headers.keySet());
                 for (String key : keys) {
                     String value = headers.get(key);
                     outputBuffer.append(key + ": " + value + "\n");
