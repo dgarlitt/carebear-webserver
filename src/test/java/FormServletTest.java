@@ -29,16 +29,17 @@ public class FormServletTest {
         formServlet = new FormServlet();
     }
 
-//    @Test
+    @Test
     public void ItSubmitsAGetRequest() throws Exception {
-        Server.CONFIG.getSession().setData("data");
+        Server.CONFIG.getSession().setData("cosby");
         Request request = new Request(new FakeInputStream("GET /form HTTP/1.1"));
         formServlet.doGet(request, response);
 
         assertEquals("HTTP/1.1 200 OK\n" +
                 "Accept-Language: en-US\n" +
                 "Content-Type: text/html; charset=utf-8\n" +
-                "Server: CareBearServer/0.0.1\n", getResponseText());
+                "Server: CareBearServer/0.0.1\n\n" +
+                "data = cosby", getResponseText());
     }
 
     @Test
