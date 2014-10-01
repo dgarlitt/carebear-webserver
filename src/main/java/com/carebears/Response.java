@@ -109,7 +109,7 @@ public class Response {
             if (statusCode < 400) {
                 outputBuffer = new StringBuffer();
 
-                SortedSet<String> keys = new TreeSet<String>(headers.keySet());
+                SortedSet<String> keys = new TreeSet<>(headers.keySet());
                 for (String key : keys) {
                     String value = headers.get(key);
                     outputBuffer.append(key + ": " + value + "\n");

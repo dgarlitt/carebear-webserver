@@ -38,6 +38,7 @@ public class Server {
         CONFIG.setPort(Integer.parseInt(portString));
         CONFIG.setHandler(new InternetHttpHandler());
         CONFIG.setServerSocket(new InternetServerSocket());
+        CONFIG.setSession(new Session());
 
         MimeTypesStore mimeTypesStore = MimeTypesStore.getInstance();
         mimeTypesStore.addMimeType("image/jpg jpg JPEG JPG jpeg", true);
@@ -53,6 +54,7 @@ public class Server {
         handler.registerServlet(new RedirectServlet());
         handler.registerServlet(new ParametersServlet());
         handler.registerServlet(new MethodOptionsServlet());
+        handler.registerServlet(new LogsServlet());
 
         CONFIG.getServerSocket().start();
     }
