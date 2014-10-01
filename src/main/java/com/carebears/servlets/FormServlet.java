@@ -3,17 +3,16 @@ package com.carebears.servlets;
 import com.carebears.*;
 
 public class FormServlet extends CareBearServlet {
-    private String path;
+
     private Session session;
 
     public FormServlet() {
-        path = "/form";
         session = Server.CONFIG.getSession();
     }
 
     @Override
     public String getPath() {
-        return path;
+        return "/form";
     }
 
     @Override

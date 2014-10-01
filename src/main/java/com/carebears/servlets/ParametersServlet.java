@@ -8,11 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ParametersServlet extends CareBearServlet {
-    private String path;
-
-    public ParametersServlet() {
-        path = "/parameters";
-    }
 
     @Override
     public void doGet(Request req, Response res) {
@@ -35,7 +30,7 @@ public class ParametersServlet extends CareBearServlet {
 
     @Override
     public String getPath() {
-        return path;
+        return "/parameters";
     }
 
 }

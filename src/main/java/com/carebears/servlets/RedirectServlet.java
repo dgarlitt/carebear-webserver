@@ -4,14 +4,7 @@ import com.carebears.CareBearServlet;
 import com.carebears.Request;
 import com.carebears.Response;
 
-import java.io.PrintWriter;
-
 public class RedirectServlet extends CareBearServlet {
-    private String path;
-
-    public RedirectServlet() {
-        path = "/redirect";
-    }
 
     @Override
     public void doGet(Request req, Response res) {
@@ -22,7 +15,7 @@ public class RedirectServlet extends CareBearServlet {
 
     @Override
     public String getPath() {
-        return path;
+        return "/redirect";
     }
 
 }
