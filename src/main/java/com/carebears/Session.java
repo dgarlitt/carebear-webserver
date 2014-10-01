@@ -1,8 +1,13 @@
 package com.carebears;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Session {
 
     private String data = null;
+    private List<String> logData = new ArrayList<>();
+    private boolean authorized = false;
 
     public void setData(String data) {
         this.data = data;
@@ -12,4 +17,25 @@ public class Session {
         return data;
     }
 
+    public String getLogData() {
+        StringBuffer sb = new StringBuffer();
+
+        for (String str : logData) {
+            sb.append(str);
+            sb.append("\n");
+        }
+        return(sb.toString());
+    }
+
+    public void addLogData(String dataString) {
+        logData.add(dataString);
+    }
+
+    public void setAuthorized() {
+        authorized = true;
+    }
+
+    public boolean isAuthorized() {
+        return authorized;
+    }
 }
