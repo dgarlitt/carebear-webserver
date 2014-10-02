@@ -3,7 +3,6 @@ package com.carebears.servlets;
 import com.carebears.*;
 
 public class FormServlet extends CareBearServlet {
-
     private Session session;
 
     public FormServlet() {

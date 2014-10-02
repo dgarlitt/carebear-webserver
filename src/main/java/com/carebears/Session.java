@@ -6,6 +6,8 @@ import java.util.List;
 public class Session {
 
     private String data = null;
+    private List<String> logData = new ArrayList<>();
+    private boolean authorized = false;
 
     private List<String> logData = new ArrayList<String>();
 

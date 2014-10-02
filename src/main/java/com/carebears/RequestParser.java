@@ -96,15 +96,15 @@ public class RequestParser {
         }
     }
 
-    private void parseBody(String body) {
-        if (!body.isEmpty()) {
-            String[] parsedBody = body.split("&");
-            for (int i = 0; i < parsedBody.length; i++) {
-                String[] parsedValues = parsedBody[i].split("=");
-                req.setParam(parsedValues[0], parsedValues[1]);
-            }
-        }
-    }
+//    private void parseBody(String body) {
+//        if (!body.isEmpty()) {
+//            String[] parsedBody = body.split("&");
+//            for (int i = 0; i < parsedBody.length; i++) {
+//                String[] parsedValues = parsedBody[i].split("=");
+//                req.setParam(parsedValues[0], parsedValues[1]);
+//            }
+//        }
+//    }
 
     private void parseBody(BufferedInputStream inputStream) throws IOException {
         String s_contentLen = req.getHeader("Content-Length");
@@ -112,7 +112,9 @@ public class RequestParser {
             int contentLength = Integer.parseInt(s_contentLen);
             byte[] byteArr = new byte[contentLength];
             inputStream.read(byteArr, 0, contentLength);
-            parseBody(new String(byteArr));
+            req.setBody(new String(byteArr));
+
+            parseParameters(req.getBody());
         }
     }
 
@@ -121,8 +123,9 @@ public class RequestParser {
 
         for(String pair: paramArray) {
             int paramIndex = pair.indexOf("=");
-            req.setParam(URLDecoder.decode(pair.substring(0, paramIndex), "UTF-8"), URLDecoder.decode(pair.substring(paramIndex + 1), "UTF-8"));
-
+            if (paramIndex > -1) {
+                req.setParam(URLDecoder.decode(pair.substring(0, paramIndex), "UTF-8"), URLDecoder.decode(pair.substring(paramIndex + 1), "UTF-8"));
+            }
         }
     }
 

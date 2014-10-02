@@ -7,6 +7,7 @@ public class Request {
     private String method;
     private String path;
     private String version;
+    private String body;
     private HashMap<String, String> headerMap;
     private HashMap<String, String> parametersMap;
     private HashMap<String, String> cookieMap;
@@ -119,5 +120,13 @@ public class Request {
         }
 
         return cookieMap.get(cookie);
+    }
+
+    protected void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getBody() {
+        return body;
     }
 }

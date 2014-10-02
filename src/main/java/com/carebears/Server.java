@@ -55,9 +55,13 @@ public class Server {
         handler.registerServlet(new ParametersServlet());
         handler.registerServlet(new MethodOptionsServlet());
         handler.registerServlet(new LogsServlet());
+<<<<<<< HEAD
         handler.registerServlet(new LogServlet());
         handler.registerServlet(new TheseServlet());
         handler.registerServlet(new RequestsServlet());
+=======
+        handler.registerServlet(new PatchWithETagServlet());
+>>>>>>> ca0e7bccf30efee3229adbf7841bf3c54a9ff2de
 
         CONFIG.getServerSocket().start();
     }

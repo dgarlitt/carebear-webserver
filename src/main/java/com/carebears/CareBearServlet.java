@@ -33,6 +33,11 @@ public abstract class CareBearServlet {
         res.send();
     }
 
+    public void doPatch(Request req, Response res) {
+        res.setStatusCode(405);
+        res.send();
+    }
+
     public void doHead(Request req, Response res) {
         res.setStatusCode(405);
         res.send();

@@ -27,6 +27,12 @@ public class RequestTest {
     @Test
     public void ParsesBodyFromRequest() throws Exception {
         Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nContent-Length:10\n\ndata=stuff"));
+        assertEquals("data=stuff", request.getBody());
+    }
+
+    @Test
+    public void ParsesParamsFromBodyOfRequest() throws Exception {
+        Request request = new Request(new FakeInputStream("GET /fake HTTP/1.1\nContent-Length:10\n\ndata=stuff"));
         assertEquals("stuff", request.getParam("data"));
     }
 
@@ -79,4 +85,5 @@ public class RequestTest {
         assertEquals("12345", request.getCookie("test"));
         assertEquals("67890", request.getCookie("test1"));
     }
+
 }
