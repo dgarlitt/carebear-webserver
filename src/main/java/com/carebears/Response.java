@@ -106,7 +106,7 @@ public class Response {
         try {
             responseOutputWriter.writeln(outputBuffer.toString());
 
-            if (statusCode < 400) {
+            if (statusCode < 402) {
                 outputBuffer = new StringBuffer();
 
                 SortedSet<String> keys = new TreeSet<>(headers.keySet());
