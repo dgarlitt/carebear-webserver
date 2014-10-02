@@ -10,7 +10,7 @@ public class Session {
     private String data = null;
     private List<String> logData = new ArrayList<>();
     private boolean authorized = false;
-    private HashMap<String, String> StringMap = new HashMap<>();
+    private HashMap<String, Object> StringMap = new HashMap<>();
     private List<String> sortList =  new ArrayList<>();
 
     public void setData(String data) {
@@ -51,13 +51,14 @@ public class Session {
         StringMap.put(key, value);
     }
 
-    public HashMap<String, String> getHashMap() {
+    public HashMap<String, Object> getHashMap() {
         return StringMap;
     }
 
     public void setSortedList(String key) {
         sortList.add(key);
     }
+
 
     public List<String> getSortList() {
         return sortList;
