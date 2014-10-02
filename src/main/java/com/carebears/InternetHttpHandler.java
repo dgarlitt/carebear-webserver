@@ -31,18 +31,20 @@ public class InternetHttpHandler extends CareBearHttpHandler {
                 case "OPTIONS":
                     servlet.doOptions(reqObj, resObj);
                     break;
+                case "PATCH":
+                    servlet.doPatch(reqObj, resObj);
+                    break;
                 case "HEAD":
                     servlet.doHead(reqObj, resObj);
                     break;
             }
         }
         else {
-            if (reqObj.getMethod().equals("GET")) {
+            if (reqObj.getMethod().equals("GET") || reqObj.getMethod().equals("PATCH")) {
                 DocumentRetriever documentRetriever = new DocumentRetriever();
                 try {
                     documentRetriever.getDocument(reqObj, resObj);
-                    //writer.write(documentContent);
-                    //writer.flush();
+
                 } catch (FileNotFoundException ex) {
                     resObj.setStatusCode(404);
                     resObj.send();

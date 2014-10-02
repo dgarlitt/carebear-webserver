@@ -82,5 +82,12 @@ public class ServletTest {
         assertEquals("GET,HEAD,POST,OPTIONS,PUT", response.getHeader("Allow"));
     }
 
+    @Test
+    public void DefaultDoPatchResponseIsFourOhFive() throws Exception {
+        Request request = new Request(new FakeInputStream("PATCH / HTTP/1.1"));
+        fakeServlet.doPatch(request, response);
+        assertEquals("HTTP/1.1 405\n", getResponseText());
+    }
+
 
 }

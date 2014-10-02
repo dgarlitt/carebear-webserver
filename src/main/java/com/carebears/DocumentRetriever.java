@@ -7,7 +7,11 @@ import java.util.regex.Pattern;
 public class DocumentRetriever {
     static private final int MAX_BUFF_SIZE = 4096;
 
-    public void getDocument(Request req, Response resp) throws FileNotFoundException {
+    public void getDocument(Request req, Response res) throws FileNotFoundException {
+        getDocument(req, res, 200);
+    }
+
+    public void getDocument(Request req, Response resp, int statusCode) throws FileNotFoundException {
         AbsolutePathMapper absolutePathMapper = new AbsolutePathMapper(req);
         File file = absolutePathMapper.getAbsolutePathFile();
         boolean isPartial = false;
@@ -71,7 +75,7 @@ public class DocumentRetriever {
 
                 buf = byteOutputStream.toByteArray();
                 bufferedInputStream.close();
-                resp.setStatusCode(isPartial? 206 : 200);
+                resp.setStatusCode(isPartial? 206 : statusCode);
                 resp.setHeader("Content-Type", mimeType);
                 resp.setHeader("Content-Length", "" + buf.length);
                 if (isPartial) {

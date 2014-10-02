@@ -35,23 +35,26 @@ public class httpHandlerTest {
     }
 
     @Test
-    public void ItReturnsMethodNotAllowed() throws Exception {
+    public void ItReturnsMethodNotAllowedForNonServletPaths() throws Exception {
         handler.handle(new FakeInputStream("POST /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 405\n", outputStream.toString());
 
-        handler.handle(new FakeInputStream("PUT /file.txt HTTP/1.1"), getTestOutputStream());
+        handler.handle(new FakeInputStream("PUT /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 405\n", outputStream.toString());
 
-        handler.handle(new FakeInputStream("DELETE /file.txt HTTP/1.1"), getTestOutputStream());
+        handler.handle(new FakeInputStream("DELETE /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 405\n", outputStream.toString());
 
-        handler.handle(new FakeInputStream("OPTIONS /file.txt HTTP/1.1"), getTestOutputStream());
+        handler.handle(new FakeInputStream("OPTIONS /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 405\n", outputStream.toString());
 
-        handler.handle(new FakeInputStream("HEAD /file.txt HTTP/1.1"), getTestOutputStream());
+        handler.handle(new FakeInputStream("PATCH /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
+        assertEquals("HTTP/1.1 404\n", outputStream.toString());
+
+        handler.handle(new FakeInputStream("HEAD /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 405\n", outputStream.toString());
 
-        handler.handle(new FakeInputStream("GET /file.txt HTTP/1.1"), getTestOutputStream());
+        handler.handle(new FakeInputStream("GET /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 404\n", outputStream.toString());
     }
 
