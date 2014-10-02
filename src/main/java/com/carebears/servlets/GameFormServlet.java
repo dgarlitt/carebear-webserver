@@ -37,11 +37,15 @@ public class GameFormServlet extends CareBearServlet {
     public String getScores() {
         HashMap<String, String> scores = session.getHashMap();
         List<String> sortedList = session.getSortList();
+        int totalScore = 0;
 
         String scoreString = "";
         for (int i = 0; i < sortedList.size(); i++) {
              scoreString += sortedList.get(i) + ": " + scores.get(sortedList.get(i)) + "<br />";
+            totalScore += Integer.parseInt(scores.get(sortedList.get(i)));
         }
+
+         scoreString += "Total Score: " + totalScore + "<br />";
 
         return scoreString;
     }
