@@ -5,6 +5,8 @@ import com.carebears.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class GameFormServlet extends CareBearServlet {
     private Session session;
@@ -18,73 +20,73 @@ public class GameFormServlet extends CareBearServlet {
         return "/puttputt";
     }
 
-
-    public void doGet(Request req, Response res) {
-        String scoreText ="";
-
+    public void deleteScores(Request req, Response res) {
         req.setPath("putt-putt-score.txt");
-
-
-
         AbsolutePathMapper apm = new AbsolutePathMapper(req);
         File file = apm.getAbsolutePathFile();
         DocumentWriter docWriter = new DocumentWriter(file);
-        res.setStatusCode(200);
 
         try {
-            scoreText = docWriter.readFileToString();
-
+            docWriter.replaceFileContent("");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        req.setPath("putt-putt.html");
-        AbsolutePathMapper apm1 = new AbsolutePathMapper(req);
-        File file1 = apm.getAbsolutePathFile();
-        DocumentWriter docWriter1 = new DocumentWriter(file1);
+    }
 
+    public String getScores() {
+        HashMap<String, String> scores = session.getHashMap();
+        List<String> sortedList = session.getSortList();
+
+        String scoreString = "";
+        for (int i = 0; i < sortedList.size(); i++) {
+             scoreString += sortedList.get(i) + ": " + scores.get(sortedList.get(i)) + "<br />";
+        }
+
+        return scoreString;
+    }
+
+    public void doGet(Request req, Response res) {
+        String scores = getScores();
+
+        req.setPath("putt-putt.html");
+        AbsolutePathMapper apm = new AbsolutePathMapper(req);
+        File file = apm.getAbsolutePathFile();
+        DocumentWriter docWriter = new DocumentWriter(file);
 
         try {
-            res.setBody(docWriter1.findAndReplaceToString("{score}", scoreText));
+            res.setBody(docWriter.findAndReplaceToString("{score}", scores));
         } catch (IOException e1) {
 
         } finally {
+            res.setStatusCode(200);
+
             res.send();
         }
     }
 
     @Override
     public void doPost(Request req, Response res) {
-        String scoreText ="";
+        List<String> sortedList = session.getSortList();
+        String atHole = "Hole " + (sortedList.size() + 1);
+        session.setSortedList(atHole);
+        session.setHashMap(atHole, req.getParam("score"));
 
-        req.setPath("putt-putt-score.txt");
 
-
-
+        String scores = getScores();
+        req.setPath("putt-putt.html");
         AbsolutePathMapper apm = new AbsolutePathMapper(req);
         File file = apm.getAbsolutePathFile();
         DocumentWriter docWriter = new DocumentWriter(file);
-        res.setStatusCode(200);
-
-        try {
-            docWriter.appendToFile("Hole: " + req.getParam("score") + "<br />");
-            scoreText = docWriter.readFileToString();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        req.setPath("putt-putt.html");
-        AbsolutePathMapper apm1 = new AbsolutePathMapper(req);
-        File file1 = apm.getAbsolutePathFile();
-        DocumentWriter docWriter1 = new DocumentWriter(file1);
 
 
         try {
-            res.setBody(docWriter1.findAndReplaceToString("{score}", scoreText));
+            res.setBody(docWriter.findAndReplaceToString("{score}", scores));
         } catch (IOException e1) {
 
         } finally {
+            res.setStatusCode(200);
+
             res.send();
         }
     }
