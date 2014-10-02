@@ -24,6 +24,13 @@ public class DocumentWriter {
         return fileContent;
     }
 
+    public String findAndReplaceToString(String target, String replacement) throws IOException {
+        String fileContent = readFileToString();
+        String newFileContent = fileContent.replace(target, replacement);
+
+        return newFileContent;
+    }
+
     public void findAndReplaceFileContent(String target, String replacement) throws IOException {
         String fileContent = readFileToString();
         String newFileContent = fileContent.replace(target, replacement);
@@ -38,8 +45,8 @@ public class DocumentWriter {
     }
 
     public void appendToFile(String output) throws IOException {
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-        out.println(output);
+        FileOutputStream out = new FileOutputStream(file, true);
+        out.write(output.getBytes());
         out.close();
     }
 

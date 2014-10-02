@@ -59,6 +59,7 @@ public class Server {
         handler.registerServlet(new TheseServlet());
         handler.registerServlet(new RequestsServlet());
         handler.registerServlet(new PatchWithETagServlet());
+        handler.registerServlet(new GameFormServlet());
 
         CONFIG.getServerSocket().start();
     }
