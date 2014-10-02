@@ -1,8 +1,15 @@
 package com.carebears;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Session {
 
     private String data = null;
+
+    private List<String> logData = new ArrayList<String>();
+
+    private boolean authorized = false;
 
     public void setData(String data) {
         this.data = data;
