@@ -1,8 +1,6 @@
 package com.carebears;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Session {
@@ -10,7 +8,6 @@ public class Session {
     private String data = null;
     private List<String> logData = new ArrayList<>();
     private boolean authorized = false;
-    private HashMap<String, Object> StringMap = new HashMap<>();
     private List<String> sortList =  new ArrayList<>();
 
     public void setData(String data) {
@@ -47,18 +44,9 @@ public class Session {
         return authorized;
     }
 
-    public void setHashMap(String key, String value) {
-        StringMap.put(key, value);
-    }
-
-    public HashMap<String, Object> getHashMap() {
-        return StringMap;
-    }
-
     public void setSortedList(String key) {
         sortList.add(key);
     }
-
 
     public List<String> getSortList() {
         return sortList;

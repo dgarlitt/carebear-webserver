@@ -34,4 +34,10 @@ public class SessionTest {
         assertTrue(session.isAuthorized());
 
     }
+
+    @Test
+    public void itReturnsSortedList() throws Exception {
+        session.setSortedList("test");
+        assertEquals("test", session.getSortList().get(0));
+    }
 }
