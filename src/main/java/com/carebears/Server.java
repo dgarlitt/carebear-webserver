@@ -60,6 +60,7 @@ public class Server {
         handler.registerServlet(new RequestsServlet());
         handler.registerServlet(new PatchWithETagServlet());
         handler.registerServlet(new JadeRenderServlet());
+        handler.registerServlet(new GameFormServlet());
 
         CONFIG.getServerSocket().start();
     }

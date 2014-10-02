@@ -32,7 +32,7 @@ public class Request {
         this.method = method;
     }
 
-    protected void setPath(String path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
