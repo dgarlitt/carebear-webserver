@@ -7,11 +7,17 @@ import java.io.File;
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 public class DocumentWriterTest {
     String dir;
     File file;
     DocumentWriter dw;
+
+    @Test
+    public void TrueIsTrue() throws Exception {
+        assertTrue(true);
+    }
 
 //    @Before
     public void setup() {
