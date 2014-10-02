@@ -40,7 +40,7 @@ public class InternetHttpHandler extends CareBearHttpHandler {
             }
         }
         else {
-            if (reqObj.getMethod().equals("GET") || reqObj.getMethod().equals("PATCH")) {
+            if (reqObj.getMethod().equals("GET")) {
                 DocumentRetriever documentRetriever = new DocumentRetriever();
                 try {
                     documentRetriever.getDocument(reqObj, resObj);

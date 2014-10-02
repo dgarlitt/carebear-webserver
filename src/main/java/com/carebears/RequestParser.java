@@ -45,17 +45,19 @@ public class RequestParser {
 
     public void parseRequestLine(String line) {
         String[] rParams = line.split(" ");
-        String[] rUrlParameters = rParams[1].split("\\?");
-        req.setMethod(rParams[0]);
-        req.setPath(rUrlParameters[0]);
-        if (rUrlParameters.length == 2) {
-            try {
-                parseParameters(rUrlParameters[1]);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+        if (rParams.length > 1) {
+            String[] rUrlParameters = rParams[1].split("\\?");
+            req.setMethod(rParams[0]);
+            req.setPath(rUrlParameters[0]);
+            if (rUrlParameters.length == 2) {
+                try {
+                    parseParameters(rUrlParameters[1]);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
+            req.setVersion(rParams[2]);
         }
-        req.setVersion(rParams[2]);
     }
 
     private String getHeaderAsString(BufferedInputStream is) throws IOException {
@@ -95,16 +97,6 @@ public class RequestParser {
             }
         }
     }
-
-//    private void parseBody(String body) {
-//        if (!body.isEmpty()) {
-//            String[] parsedBody = body.split("&");
-//            for (int i = 0; i < parsedBody.length; i++) {
-//                String[] parsedValues = parsedBody[i].split("=");
-//                req.setParam(parsedValues[0], parsedValues[1]);
-//            }
-//        }
-//    }
 
     private void parseBody(BufferedInputStream inputStream) throws IOException {
         String s_contentLen = req.getHeader("Content-Length");

@@ -48,9 +48,6 @@ public class httpHandlerTest {
         handler.handle(new FakeInputStream("OPTIONS /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 405\n", outputStream.toString());
 
-        handler.handle(new FakeInputStream("PATCH /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
-        assertEquals("HTTP/1.1 404\n", outputStream.toString());
-
         handler.handle(new FakeInputStream("HEAD /make_believe_file.mbf HTTP/1.1"), getTestOutputStream());
         assertEquals("HTTP/1.1 405\n", outputStream.toString());
 
