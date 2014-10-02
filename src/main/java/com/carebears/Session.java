@@ -9,10 +9,6 @@ public class Session {
     private List<String> logData = new ArrayList<>();
     private boolean authorized = false;
 
-    private List<String> logData = new ArrayList<String>();
-
-    private boolean authorized = false;
-
     public void setData(String data) {
         this.data = data;
     }

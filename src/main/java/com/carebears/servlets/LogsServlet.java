@@ -12,7 +12,7 @@ public class LogsServlet extends CareBearServlet {
     }
 
     public void doGet(Request req, Response res) {
-        if (req.hasHeader("Authorize")) {
+        if (req.hasHeader("Authorization")) {
             Server.CONFIG.getSession().setAuthorized();
         }
 
